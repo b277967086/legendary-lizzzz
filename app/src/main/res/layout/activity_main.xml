@@ -51,7 +51,7 @@
             android:text="发送广播" />
 
         <Button
-            android:id="@+id/rxjava"
+            android:id="@+id/bt_rxjava"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="rxjava" />

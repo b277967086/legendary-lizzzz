@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         btThreadHelp = (Button) findViewById(R.id.thread_help);
         btnotification = (Button) findViewById(R.id.notification);
         sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
-        rxjava = (Button) findViewById(R.id.rxjava);
+        rxjava = (Button) findViewById(R.id.bt_rxjava);
         addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
