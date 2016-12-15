@@ -1,0 +1,6 @@
+<root>
+  <item
+      name='cn.aigestudio.datepicker.views.MonthView java.util.List&lt;java.lang.String&gt; getDateSelected()'>
+    <annotation name='java.lang.annotation.Deprecated' />
+  </item>
+</root>
