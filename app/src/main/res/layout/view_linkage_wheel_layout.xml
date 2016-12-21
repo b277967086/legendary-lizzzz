@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp">
+
+        <LinearLayout
+            android:id="@+id/linear_wheel"
+            android:layout_width="match_parent"
+            android:layout_height="190dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/white"
+            android:orientation="horizontal">
+
+            <com.good.diaodiaode.tebiediao.wheel.WheelView
+                android:id="@+id/wheel_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0" />
+
+
+            <com.good.diaodiaode.tebiediao.wheel.WheelView
+                android:id="@+id/wheel_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0" />
+
+
+            <com.good.diaodiaode.tebiediao.wheel.WheelView
+                android:id="@+id/wheel_3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.0" />
+
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+
+</LinearLayout>
+
+

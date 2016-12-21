@@ -34,6 +34,7 @@ import com.facebook.rebound.SpringUtil;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Condition;
@@ -73,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private NotificationManager manager;
     private Button sendBroadcast;
     private Button rxjava;
+    private Button linkage;
+    private LinkageWheelPickerDialog mLinkageWheelPickerDialog;
+    private ArrayList<LinkageDataBean> datas;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         btnotification = (Button) findViewById(R.id.notification);
         sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
         rxjava = (Button) findViewById(R.id.bt_rxjava);
+        linkage = (Button) findViewById(R.id.linkage);
         addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -303,6 +308,56 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                         .subscribe(observer);
 
 //                observable.subscribe(observer2);
+            }
+        });
+
+
+        datas = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            LinkageDataBean bean1 = new LinkageDataBean();
+            bean1.setName("张"+i);
+            ArrayList<LinkageDataBean> list2 = new ArrayList<>();
+            bean1.setLinkageDataBeans(list2);
+            for (int i2 = 0;i2<10;i2++){
+                LinkageDataBean bean2 = new LinkageDataBean();
+                bean2.setName("李"+i+i2);
+                ArrayList<LinkageDataBean> list3 = new ArrayList<>();
+                bean2.setLinkageDataBeans(list3);
+                for (int i3 = 0;i3<10;i3++){
+                    LinkageDataBean bean3 = new LinkageDataBean();
+                    bean3.setName("赵"+i+i2+i3);
+                    list3.add(bean3);
+                }
+                list2.add(bean2);
+            }
+            datas.add(bean1);
+        }
+
+
+
+        mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
+                .setCancelStringId("关闭")
+                .setTitleStringId("取消当前预约")
+                .setTitleIsShow(true)
+                .setCyclic(false)
+                .setSureStringId("确定")
+                .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
+                .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
+                .setWheelItemTextSelectorSize(14)
+                .setCallBack(new OnSelectChangedListener() {
+                    @Override
+                    public void onSelectChanged(int... selectItems) {
+
+                    }
+                })
+                .setData(datas)
+                .setCurrentItems(3,7,9)
+                .build();
+
+        linkage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mLinkageWheelPickerDialog.show(getSupportFragmentManager(),"mLinkageWheelPickerDialog");
             }
         });
     }
