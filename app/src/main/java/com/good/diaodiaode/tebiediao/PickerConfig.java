@@ -1,6 +1,7 @@
 package com.good.diaodiaode.tebiediao;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by jzxiang on 16/5/15.
@@ -32,9 +33,12 @@ public class PickerConfig {
 
     /**
      * LinkageWheelPickDialog使用
+     * canLinkaged为true时，需要设置mLinkageDatas；
+     * canLinkaged为false时，需要设置mNoLinkageDatas；
      */
     public boolean canLinkaged = false; //是否可以联动
     public ArrayList<LinkageDataBean> mLinkageDatas = new ArrayList<>();//联动的数据
+    public LinkedList<ArrayList<LinkageDataBean>> mNoLinkageDatas = new LinkedList<>();//非联动的数据
     public int[] mSelectItems = new int[]{0,0,0};//当前的选中的item
 
     /**

@@ -334,6 +334,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
 
 
+        ArrayList<LinkageDataBean> list1 = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            LinkageDataBean bean1 = new LinkageDataBean();
+            bean1.setName("张"+i);
+            list1.add(bean1);
+        }
+
+        ArrayList<LinkageDataBean> list2 = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            LinkageDataBean bean1 = new LinkageDataBean();
+            bean1.setName("李"+i);
+            list2.add(bean1);
+        }
+
+        ArrayList<LinkageDataBean> list3 = new ArrayList<>();
+        for (int i = 0;i<10;i++){
+            LinkageDataBean bean1 = new LinkageDataBean();
+            bean1.setName("王"+i);
+            list3.add(bean1);
+        }
 
         mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
                 .setCancelStringId("关闭")
@@ -350,8 +370,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
                     }
                 })
-                .setData(datas)
-                .setCurrentItems(3,7,9)
+                .setCanLinkaged(true)
+                .setLinkedData(datas)
+//                .addNoLinkedData(list1)
+//                .addNoLinkedData(list2)
+//                .addNoLinkedData(list3)
+                .setCurrentItems(-2,-1,-1)
                 .build();
 
         linkage.setOnClickListener(new View.OnClickListener() {
