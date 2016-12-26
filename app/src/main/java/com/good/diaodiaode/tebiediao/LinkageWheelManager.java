@@ -74,7 +74,7 @@ public class LinkageWheelManager {
             mWheel1Adapter.setConfig(mPickerConfig);
             wheelView1.setViewAdapter(mWheel1Adapter);
             wheelView1.setCyclic(mPickerConfig.cyclic);
-            wheelView1.setCurrentItem(mPickerConfig.mSelectItems[0]);
+            wheelView1.setCurrentItem(mPickerConfig.mSelectItems.length>0?mPickerConfig.mSelectItems[0]:0);
         } catch (Exception e) {
             Utils.hideViews(wheelView1, wheelView2, wheelView3);
         }
@@ -88,7 +88,7 @@ public class LinkageWheelManager {
             mWheel2Adapter.setConfig(mPickerConfig);
             wheelView2.setViewAdapter(mWheel2Adapter);
             wheelView2.setCyclic(mPickerConfig.cyclic);
-            wheelView2.setCurrentItem(mPickerConfig.mSelectItems[1]);
+            wheelView2.setCurrentItem(mPickerConfig.mSelectItems.length>1?mPickerConfig.mSelectItems[1]:0);
         } catch (Exception e) {
             Utils.hideViews(wheelView2, wheelView3);
         }
@@ -102,7 +102,7 @@ public class LinkageWheelManager {
             mWheel3Adapter.setConfig(mPickerConfig);
             wheelView3.setViewAdapter(mWheel3Adapter);
             wheelView3.setCyclic(mPickerConfig.cyclic);
-            wheelView3.setCurrentItem(mPickerConfig.mSelectItems[2]);
+            wheelView3.setCurrentItem(mPickerConfig.mSelectItems.length>2?mPickerConfig.mSelectItems[2]:0);
         } catch (Exception e) {
             Utils.hideViews(wheelView3);
         }finally {}

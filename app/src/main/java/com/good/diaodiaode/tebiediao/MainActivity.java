@@ -361,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 .setTitleIsShow(true)
                 .setCyclic(false)
                 .setSureStringId("确定")
+                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
                 .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
                 .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
                 .setWheelItemTextSelectorSize(14)
@@ -375,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //                .addNoLinkedData(list1)
 //                .addNoLinkedData(list2)
 //                .addNoLinkedData(list3)
-                .setCurrentItems(-2,-1,-1)
+                .setCurrentItems(3,2)
                 .build();
 
         linkage.setOnClickListener(new View.OnClickListener() {
