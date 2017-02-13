@@ -56,6 +56,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="linkage" />
+
+        <Button
+            android:id="@+id/uploadProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="uploadProgress" />
+
+        <com.good.diaodiaode.tebiediao.SecondOrderBezier
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+
+        </com.good.diaodiaode.tebiediao.SecondOrderBezier>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,16 +1,11 @@
 package com.good.diaodiaode.tebiediao;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +32,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -75,38 +72,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button sendBroadcast;
     private Button rxjava;
     private Button linkage;
+    private Button uploadProgress;
     private LinkageWheelPickerDialog mLinkageWheelPickerDialog;
     private ArrayList<LinkageDataBean> datas;
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-
-    private ObjectAnimator createInAnimator(View view) {
-        PropertyValuesHolder translationY1 = PropertyValuesHolder.ofFloat("translationY", 60f, -20f);
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationY1, alpha);
-        //文字弹到最高时间
-        animator.setDuration(160);
-        return animator;
-    }
-
-    private ObjectAnimator createBackAnimator(View view) {
-        ObjectAnimator anim = ObjectAnimator.ofFloat(view, "translationY", -20f, 0f);
-        //文字重最高回到中间的时间
-        anim.setDuration(120);
-        return anim;
-    }
-
-    private ObjectAnimator createOutAnimator(View view) {
-        PropertyValuesHolder translationY = PropertyValuesHolder.ofFloat("translationY", 0f, -60f);
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationY, alpha);
-        //文字消失时间
-        animator.setDuration(160);
-        //文字在停留时间
-        animator.setStartDelay(600);
-        return animator;
-    }
-
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -114,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mInstance.setTexts("认证成长值", "+1", "行为成长", "+10000", "业绩成长", "+200");
             mInstance.show();
             abortBroadcast();
-            finish();
         }
     }
 
@@ -132,7 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
         rxjava = (Button) findViewById(R.id.bt_rxjava);
         linkage = (Button) findViewById(R.id.linkage);
-        addSpringView(rl);
+        uploadProgress = (Button) findViewById(R.id.uploadProgress);
+//        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
         addSpringView(btThreadHelp);
@@ -141,17 +109,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         mInstance = RotateCircleHelper.getInstance(getApplicationContext());
 
-        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter);
-
-        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
-
-        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
+//        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter);
+//
+//        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
+//
+//        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
 
 
         btShowToast.setOnClickListener(new View.OnClickListener() {
@@ -245,24 +213,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mScaleSpring = mSpringSystem.createSpring();
         mScaleSpring.addListener(mSpringListener);
 
-        final Observer<String>  observer= new Observer<String>() {
+        final Observer<String> observer = new Observer<String>() {
             @Override
             public void onCompleted() {
-                Log.e("rxjava","onCompleted");
+                Log.e("rxjava", "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("rxjava","onError");
+                Log.e("rxjava", "onError");
             }
 
             @Override
             public void onNext(String s) {
-                Log.e("rxjava",s);
+                Log.e("rxjava", s);
             }
         };
 
-        final Observer<Student> observer2 = new Observer<Student>(){
+        final Observer<Student> observer2 = new Observer<Student>() {
 
             @Override
             public void onCompleted() {
@@ -280,13 +248,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         };
 
-        final Person per1 = new Person(123,"王二");
-        Person per2 = new Person(234,"李三");
+        final Person per1 = new Person(123, "王二");
+        Person per2 = new Person(234, "李三");
         final Person[] persons = {per1, per2};
 
         rxjava.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Observable.from(persons).map(new Func1<Person, Student>() {
                     @Override
                     public Student call(Person person) {
@@ -294,16 +263,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                         .flatMap(new Func1<Student, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(Student student) {
-                        return Observable.from(student.getFriendnames());
-                    }
-                }).subscribeOn(Schedulers.io())
+                            @Override
+                            public Observable<String> call(Student student) {
+                                return Observable.from(student.getFriendnames());
+                            }
+                        }).subscribeOn(Schedulers.io())
                         .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
+                            @Override
+                            public void call() {
+                            }
+                        }).observeOn(AndroidSchedulers.mainThread())
 
                         .subscribe(observer);
 
@@ -313,19 +282,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         datas = new ArrayList<>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("张"+i);
+            bean1.setName("张" + i);
             ArrayList<LinkageDataBean> list2 = new ArrayList<>();
             bean1.setLinkageDataBeans(list2);
-            for (int i2 = 0;i2<10;i2++){
+            for (int i2 = 0; i2 < 10; i2++) {
                 LinkageDataBean bean2 = new LinkageDataBean();
-                bean2.setName("李"+i+i2);
+                bean2.setName("李" + i + i2);
                 ArrayList<LinkageDataBean> list3 = new ArrayList<>();
                 bean2.setLinkageDataBeans(list3);
-                for (int i3 = 0;i3<10;i3++){
+                for (int i3 = 0; i3 < 10; i3++) {
                     LinkageDataBean bean3 = new LinkageDataBean();
-                    bean3.setName("赵"+i+i2+i3);
+                    bean3.setName("赵" + i + i2 + i3);
                     list3.add(bean3);
                 }
                 list2.add(bean2);
@@ -335,23 +304,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         ArrayList<LinkageDataBean> list1 = new ArrayList<>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("张"+i);
+            bean1.setName("张" + i);
             list1.add(bean1);
         }
 
         ArrayList<LinkageDataBean> list2 = new ArrayList<>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("李"+i);
+            bean1.setName("李" + i);
             list2.add(bean1);
         }
 
         ArrayList<LinkageDataBean> list3 = new ArrayList<>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("王"+i);
+            bean1.setName("王" + i);
             list3.add(bean1);
         }
 
@@ -376,126 +345,113 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //                .addNoLinkedData(list1)
 //                .addNoLinkedData(list2)
 //                .addNoLinkedData(list3)
-                .setCurrentItems(3,2)
+                .setCurrentItems(3, 2)
                 .build();
 
         linkage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLinkageWheelPickerDialog.show(getSupportFragmentManager(),"mLinkageWheelPickerDialog");
+                mLinkageWheelPickerDialog.show(getSupportFragmentManager(), "mLinkageWheelPickerDialog");
+            }
+        });
+
+        uploadProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final UploadProgressBarDialog uploadProgressBarHelper = UploadProgressBarDialog.create(getApplicationContext());
+                uploadProgressBarHelper.show();
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        uploadProgressBarHelper.setUploadComplete();
+                    }
+                }, 5000L);
             }
         });
     }
 
     private Student getStudent(int id) {
-        return new Student(id,"撒冷");
+        return new Student(id, "撒冷");
     }
 
-    class ThreadA implements Runnable{
+    class ThreadA implements Runnable {
         @Override
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 lock.lock();
                 System.out.println("首先输出1-3");
-                while(value<=3)
-                {
+                while (value <= 3) {
                     System.out.println(value++);
                 }
                 Condition456.signal();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
-            try
-            {
+            try {
                 lock.lock();
-                while(value<=6)
-                {
+                while (value <= 6) {
                     Condition789.await();
                 }
                 System.out.println("输出7-9");
-                while(value<=9)
-                {
+                while (value <= 9) {
                     System.out.println(value++);
                 }
                 Condition101112.signal();
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
         }
     }
 
-    class ThreadB implements Runnable{
+    class ThreadB implements Runnable {
         @Override
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 lock.lock();
-                while(value<=3)
-                {
+                while (value <= 3) {
                     Condition456.await();
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally{
+            } finally {
                 lock.unlock();
             }
 
-            try{
+            try {
                 lock.lock();
                 System.out.println("输出4-6");
-                while(value<=6)
-                {
+                while (value <= 6) {
                     System.out.println(value++);
                 }
                 Condition789.signal();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
-            try
-            {
+            try {
                 lock.lock();
-                while(value<=9)
-                {
+                while (value <= 9) {
                     Condition101112.await();
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally{
+            } finally {
                 lock.unlock();
             }
 
-            try{
+            try {
                 lock.lock();
                 System.out.println("输出10-12");
-                while(value<=12)
-                {
+                while (value <= 12) {
                     System.out.println(value++);
                 }
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
         }
@@ -594,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         public void onSpringUpdate(Spring spring) {
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.8);
 //            Log.e("spring.getCurrentValue()",spring.getCurrentValue());
-            Log.e("WTF_mappedValue",String.valueOf(mappedValue));
+            Log.e("WTF_mappedValue", String.valueOf(mappedValue));
             View v = getSpringView(mCurrentTouchViewTag);
             if (v != null) {
                 v.setScaleX(mappedValue);
