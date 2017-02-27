@@ -63,6 +63,17 @@
             android:layout_height="wrap_content"
             android:text="uploadProgress" />
 
+        <Button
+            android:id="@+id/kedaxunfei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kedaxunfei" />
+
+        <EditText
+            android:id="@+id/mResultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <com.good.diaodiaode.tebiediao.SecondOrderBezier
             android:layout_width="match_parent"
             android:layout_height="400dp">
