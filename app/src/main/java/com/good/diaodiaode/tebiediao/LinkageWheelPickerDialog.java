@@ -69,7 +69,7 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
 
     View initView() {
 //        LayoutInflater inflater = LayoutInflater.from(getContext());
-        LayoutInflater inflater= (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.view_linkage_wheel_layout, null);
         TextView cancel = (TextView) view.findViewById(R.id.tv_cancel);
         cancel.setOnClickListener(this);
@@ -109,7 +109,7 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
         int currentWheel2 = mLinkageWheelManager.getCurrentWheel2();
         int currentWheel3 = mLinkageWheelManager.getCurrentWheel3();
         if (mPickerConfig.mOnSelectChangedListener != null) {
-            mPickerConfig.mOnSelectChangedListener.onSelectChanged(currentWheel1,currentWheel2,currentWheel3);
+            mPickerConfig.mOnSelectChangedListener.onSelectChanged(currentWheel1, currentWheel2, currentWheel3);
         }
         dismiss();
     }
@@ -165,6 +165,7 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
             mPickerConfig.mWheelTVSize = size;
             return this;
         }
+
         public Builder setWheelItemTextSelectorSize(int size) {
             mPickerConfig.mWheelTVSelectorSize = size;
             return this;
@@ -185,8 +186,18 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
             return this;
         }
 
-        public Builder setData(ArrayList<LinkageDataBean> data) {
+        public Builder setCanLinkaged(boolean data) {
+            mPickerConfig.canLinkaged = data;
+            return this;
+        }
+
+        public Builder setLinkedData(ArrayList<LinkageDataBean> data) {
             mPickerConfig.mLinkageDatas = data;
+            return this;
+        }
+
+        public Builder addNoLinkedData(ArrayList<LinkageDataBean> data) {
+            mPickerConfig.mNoLinkageDatas.add(data);
             return this;
         }
 

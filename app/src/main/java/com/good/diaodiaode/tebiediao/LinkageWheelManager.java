@@ -1,7 +1,6 @@
 package com.good.diaodiaode.tebiediao;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 
 import com.good.diaodiaode.tebiediao.wheel.OnWheelChangedListener;
@@ -63,57 +62,53 @@ public class LinkageWheelManager {
             default:
                 break;
         }
-        wheelView1.addChangingListener(wheel1Listener);
-        wheelView1.addChangingListener(wheel2Listener);
-        wheelView2.addChangingListener(wheel2Listener);
     }
 
     void initWheel() {
 
         //初始化wheelView1
-        ArrayList<LinkageDataBean> wheel1Datas = mPickerConfig.mLinkageDatas;
-        if (wheelView1.getVisibility() == View.GONE || wheel1Datas == null)
-            return;
-        mWheel1Adapter = new ArrayListWheelAdapter<>(mContext, wheel1Datas);
-        mWheel1Adapter.setConfig(mPickerConfig);
-        wheelView1.setViewAdapter(mWheel1Adapter);
-        wheelView1.setCyclic(mPickerConfig.cyclic);
+        ArrayList<LinkageDataBean> wheel1Datas = null;
+        try {
+           wheel1Datas = mPickerConfig.canLinkaged ? mPickerConfig.mLinkageDatas : mPickerConfig.mNoLinkageDatas.get(0);
+            mWheel1Adapter = new ArrayListWheelAdapter<>(mContext, wheel1Datas);
+            mWheel1Adapter.setConfig(mPickerConfig);
+            wheelView1.setViewAdapter(mWheel1Adapter);
+            wheelView1.setCyclic(mPickerConfig.cyclic);
+            wheelView1.setCurrentItem(mPickerConfig.mSelectItems.length>0?mPickerConfig.mSelectItems[0]:0);
+        } catch (Exception e) {
+            Utils.hideViews(wheelView1, wheelView2, wheelView3);
+        }
 
         //初始化wheelView2
         ArrayList<LinkageDataBean> wheel2Datas = null;
         try {
-            wheel2Datas = mPickerConfig.mLinkageDatas.get(mPickerConfig.mSelectItems[0]).getLinkageDataBeans();
+            wheel2Datas = mPickerConfig.canLinkaged ? mPickerConfig.mLinkageDatas.get(wheelView1.getCurrentItem()).getLinkageDataBeans() :
+                    mPickerConfig.mNoLinkageDatas.get(1);
+            mWheel2Adapter = new ArrayListWheelAdapter<>(mContext, wheel2Datas);
+            mWheel2Adapter.setConfig(mPickerConfig);
+            wheelView2.setViewAdapter(mWheel2Adapter);
+            wheelView2.setCyclic(mPickerConfig.cyclic);
+            wheelView2.setCurrentItem(mPickerConfig.mSelectItems.length>1?mPickerConfig.mSelectItems[1]:0);
         } catch (Exception e) {
-            Log.e(LinkageWheelManager.class.getName(), e.getMessage());
+            Utils.hideViews(wheelView2, wheelView3);
         }
-        if (wheelView2.getVisibility() == View.GONE || wheel2Datas == null)
-            return;
-        mWheel2Adapter = new ArrayListWheelAdapter<>(mContext, wheel2Datas);
-        mWheel2Adapter.setConfig(mPickerConfig);
-        wheelView2.setViewAdapter(mWheel2Adapter);
-        wheelView2.setCyclic(mPickerConfig.cyclic);
 
         //初始化wheelView3
         ArrayList<LinkageDataBean> wheel3Datas = null;
         try {
-            wheel3Datas = mPickerConfig.mLinkageDatas.get(mPickerConfig.mSelectItems[0]).getLinkageDataBeans().get(mPickerConfig.mSelectItems[1]).getLinkageDataBeans();
+            wheel3Datas = mPickerConfig.canLinkaged ? mPickerConfig.mLinkageDatas.get(wheelView1.getCurrentItem()).getLinkageDataBeans().get(wheelView2.getCurrentItem()).getLinkageDataBeans() :
+                    mPickerConfig.mNoLinkageDatas.get(2);
+            mWheel3Adapter = new ArrayListWheelAdapter<>(mContext, wheel3Datas);
+            mWheel3Adapter.setConfig(mPickerConfig);
+            wheelView3.setViewAdapter(mWheel3Adapter);
+            wheelView3.setCyclic(mPickerConfig.cyclic);
+            wheelView3.setCurrentItem(mPickerConfig.mSelectItems.length>2?mPickerConfig.mSelectItems[2]:0);
         } catch (Exception e) {
-            Log.e(LinkageWheelManager.class.getName(), e.getMessage());
-        }
-        if (wheelView3.getVisibility() == View.GONE || wheel3Datas == null)
-            return;
-        mWheel3Adapter = new ArrayListWheelAdapter<>(mContext, wheel3Datas);
-        mWheel3Adapter.setConfig(mPickerConfig);
-        wheelView3.setViewAdapter(mWheel3Adapter);
-        wheelView3.setCyclic(mPickerConfig.cyclic);
-
-        //设置各个wheelView的初始化值
-        try {
-            wheelView1.setCurrentItem(mPickerConfig.mSelectItems[0]);
-            wheelView2.setCurrentItem(mPickerConfig.mSelectItems[1]);
-            wheelView3.setCurrentItem(mPickerConfig.mSelectItems[2]);
-        } catch (Exception e) {
-            Log.e(LinkageWheelManager.class.getName(), e.getMessage());
+            Utils.hideViews(wheelView3);
+        }finally {}
+        if(mPickerConfig.canLinkaged){
+            wheelView1.addChangingListener(wheel1Listener);
+            wheelView2.addChangingListener(wheel2Listener);
         }
     }
 
@@ -147,9 +142,9 @@ public class LinkageWheelManager {
             wheelView.setCyclic(mPickerConfig.cyclic);
         } else {
             mWheelAdapter.setItems(wheelDatas);
-            wheelView.setCurrentItem(0);
-//            mWheelAdapter.notifyDataChangedEvent();
+            mWheelAdapter.notifyDataChangedEvent();
         }
+        wheelView.setCurrentItem(0);
     }
 
     public int getCurrentWheel1() {

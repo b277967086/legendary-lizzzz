@@ -1,26 +1,26 @@
 package com.good.diaodiaode.tebiediao;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.annotation.TargetApi;
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Build;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -30,13 +30,34 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
+import com.good.diaodiaode.tebiediao.db.DatabaseHelper;
+import com.good.diaodiaode.tebiediao.db.User;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.SpeechUtility;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.j256.ormlite.dao.Dao;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -62,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private static final int NOTIFICATION_FLAG = 1;
     Field field = null;
     Object obj = null;
-    private AccelerateDecelerateInterpolator accelerateDecelerateInterpolator = new AccelerateDecelerateInterpolator();
+    private DecelerateInterpolator accelerateDecelerateInterpolator = new DecelerateInterpolator();
     private RotateCirCleView rcc;
     private RotateCircleHelper mInstance;
 
@@ -75,38 +96,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button sendBroadcast;
     private Button rxjava;
     private Button linkage;
+    private Button uploadProgress;
     private LinkageWheelPickerDialog mLinkageWheelPickerDialog;
     private ArrayList<LinkageDataBean> datas;
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-
-    private ObjectAnimator createInAnimator(View view) {
-        PropertyValuesHolder translationY1 = PropertyValuesHolder.ofFloat("translationY", 60f, -20f);
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationY1, alpha);
-        //文字弹到最高时间
-        animator.setDuration(160);
-        return animator;
-    }
-
-    private ObjectAnimator createBackAnimator(View view) {
-        ObjectAnimator anim = ObjectAnimator.ofFloat(view, "translationY", -20f, 0f);
-        //文字重最高回到中间的时间
-        anim.setDuration(120);
-        return anim;
-    }
-
-    private ObjectAnimator createOutAnimator(View view) {
-        PropertyValuesHolder translationY = PropertyValuesHolder.ofFloat("translationY", 0f, -60f);
-        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 1f, 0f);
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, translationY, alpha);
-        //文字消失时间
-        animator.setDuration(160);
-        //文字在停留时间
-        animator.setStartDelay(600);
-        return animator;
-    }
-
+    private Button kedaxunfei;
+    private EditText mResultText;
+    private Button ormlite;
+    private Button permisstion;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -114,14 +110,30 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             mInstance.setTexts("认证成长值", "+1", "行为成长", "+10000", "业绩成长", "+200");
             mInstance.show();
             abortBroadcast();
-            finish();
         }
     }
+
+    /**
+     * 初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+
+        @Override
+        public void onInit(int code) {
+            Log.d("TAG", "SpeechRecognizer init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                Toast.makeText(MainActivity.this, "初始化失败，错误码：" + code, Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
+
         bt = (Button) findViewById(R.id.bt_takepic);
 //        addSpringView(bt);
         rl = (RelativeLayout) findViewById(R.id.rl);
@@ -132,7 +144,12 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
         rxjava = (Button) findViewById(R.id.bt_rxjava);
         linkage = (Button) findViewById(R.id.linkage);
-        addSpringView(rl);
+        uploadProgress = (Button) findViewById(R.id.uploadProgress);
+        kedaxunfei = (Button) findViewById(R.id.kedaxunfei);
+        mResultText = (EditText) findViewById(R.id.mResultText);
+        ormlite = (Button) findViewById(R.id.ormlite);
+        permisstion = (Button) findViewById(R.id.permisstion);
+//        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
         addSpringView(btThreadHelp);
@@ -141,17 +158,17 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
         mInstance = RotateCircleHelper.getInstance(getApplicationContext());
 
-        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter);
-
-        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
-
-        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
-        intentFilter.setPriority(10);
-        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
+//        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter);
+//
+//        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
+//
+//        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
+//        intentFilter.setPriority(10);
+//        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
 
 
         btShowToast.setOnClickListener(new View.OnClickListener() {
@@ -245,24 +262,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mScaleSpring = mSpringSystem.createSpring();
         mScaleSpring.addListener(mSpringListener);
 
-        final Observer<String>  observer= new Observer<String>() {
+        final Observer<String> observer = new Observer<String>() {
             @Override
             public void onCompleted() {
-                Log.e("rxjava","onCompleted");
+                Log.e("rxjava", "onCompleted");
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("rxjava","onError");
+                Log.e("rxjava", "onError");
             }
 
             @Override
             public void onNext(String s) {
-                Log.e("rxjava",s);
+                Log.e("rxjava", s);
             }
         };
 
-        final Observer<Student> observer2 = new Observer<Student>(){
+        final Observer<Student> observer2 = new Observer<Student>() {
 
             @Override
             public void onCompleted() {
@@ -280,30 +297,31 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         };
 
-        final Person per1 = new Person(123,"王二");
-        Person per2 = new Person(234,"李三");
+        final Person per1 = new Person(123, "王二");
+        Person per2 = new Person(234, "李三");
         final Person[] persons = {per1, per2};
 
         rxjava.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Observable.from(persons).map(new Func1<Person, Student>() {
                     @Override
                     public Student call(Person person) {
-                        return getStudent(person.getId());
+                        return  getStudent(person.getId());
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                         .flatMap(new Func1<Student, Observable<String>>() {
-                    @Override
-                    public Observable<String> call(Student student) {
-                        return Observable.from(student.getFriendnames());
-                    }
-                }).subscribeOn(Schedulers.io())
+                            @Override
+                            public Observable<String> call(Student student) {
+                                return Observable.from(student.getFriendnames());
+                            }
+                        }).subscribeOn(Schedulers.io())
                         .doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
+                            @Override
+                            public void call() {
+                            }
+                        }).observeOn(AndroidSchedulers.mainThread())
 
                         .subscribe(observer);
 
@@ -313,19 +331,19 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         datas = new ArrayList<>();
-        for (int i = 0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("张"+i);
+            bean1.setName("张" + i);
             ArrayList<LinkageDataBean> list2 = new ArrayList<>();
             bean1.setLinkageDataBeans(list2);
-            for (int i2 = 0;i2<10;i2++){
+            for (int i2 = 0; i2 < 10; i2++) {
                 LinkageDataBean bean2 = new LinkageDataBean();
-                bean2.setName("李"+i+i2);
+                bean2.setName("李" + i + i2);
                 ArrayList<LinkageDataBean> list3 = new ArrayList<>();
                 bean2.setLinkageDataBeans(list3);
-                for (int i3 = 0;i3<10;i3++){
+                for (int i3 = 0; i3 < 10; i3++) {
                     LinkageDataBean bean3 = new LinkageDataBean();
-                    bean3.setName("赵"+i+i2+i3);
+                    bean3.setName("赵" + i + i2 + i3);
                     list3.add(bean3);
                 }
                 list2.add(bean2);
@@ -334,6 +352,26 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         }
 
 
+//        ArrayList<LinkageDataBean> list1 = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            LinkageDataBean bean1 = new LinkageDataBean();
+//            bean1.setName("张" + i);
+//            list1.add(bean1);
+//        }
+//
+//        ArrayList<LinkageDataBean> list2 = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            LinkageDataBean bean1 = new LinkageDataBean();
+//            bean1.setName("李" + i);
+//            list2.add(bean1);
+//        }
+//
+//        ArrayList<LinkageDataBean> list3 = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            LinkageDataBean bean1 = new LinkageDataBean();
+//            bean1.setName("王" + i);
+//            list3.add(bean1);
+//        }
 
         mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
                 .setCancelStringId("关闭")
@@ -341,6 +379,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 .setTitleIsShow(true)
                 .setCyclic(false)
                 .setSureStringId("确定")
+                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
                 .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
                 .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
                 .setWheelItemTextSelectorSize(14)
@@ -350,151 +389,280 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
                     }
                 })
-                .setData(datas)
-                .setCurrentItems(3,7,9)
+                .setCanLinkaged(true)
+                .setLinkedData(datas)
+//                .addNoLinkedData(list1)
+//                .addNoLinkedData(list2)
+//                .addNoLinkedData(list3)
+                .setCurrentItems(3, 2)
                 .build();
 
         linkage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mLinkageWheelPickerDialog.show(getSupportFragmentManager(),"mLinkageWheelPickerDialog");
+                mLinkageWheelPickerDialog.show(getSupportFragmentManager(), "mLinkageWheelPickerDialog");
             }
         });
+
+        uploadProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final UploadProgressBarDialog uploadProgressBarHelper = UploadProgressBarDialog.create(getApplicationContext());
+                uploadProgressBarHelper.show();
+
+                Timer timer = new Timer();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        uploadProgressBarHelper.setUploadComplete();
+                    }
+                }, 5000L);
+            }
+        });
+
+
+        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+        SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(getApplicationContext(), mInitListener);
+        //2.设置听写参数，详见《科大讯飞MSC API手册(Android)》SpeechConstant类
+        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
+        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
+
+        //听写监听器
+        RecognizerListener mRecoListener = new RecognizerListener() {
+            //听写结果回调接口(返回Json格式结果，用户可参见附录12.1)；
+            //一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
+            // 关于解析Json的代码可参见MscDemo中JsonParser类；
+            //isLast等于true时会话结束。
+            public void onResult(RecognizerResult results, boolean isLast) {
+                Log.d("Result:", results.getResultString());
+            }
+
+            //会话发生错误回调接口
+            public void onError(SpeechError error) {
+                error.getPlainDescription(true); //获取错误码描述}
+                //开始录音
+            }
+
+            //音量值0~30
+            @Override
+            public void onVolumeChanged(int i, byte[] bytes) {
+
+            }
+
+            public void onBeginOfSpeech() {
+            }
+
+            //结束录音
+            public void onEndOfSpeech() {
+            }
+
+            //扩展用接口
+            public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            }
+        };
+
+        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+        final RecognizerDialog iatDialog = new RecognizerDialog(this, mInitListener);
+//2.设置听写参数，同上节
+//3.设置回调接口
+        iatDialog.setListener(new RecognizerDialogListener() {
+            @Override
+            public void onResult(RecognizerResult recognizerResult, boolean b) {
+                printResult(recognizerResult);
+                if (b) {
+                } else {
+
+                }
+            }
+
+            @Override
+            public void onError(SpeechError speechError) {
+
+            }
+        });
+
+        //4.开始听写
+        mIat.startListening(mRecoListener);
+
+        kedaxunfei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //3.开始听写
+//                mIat.startListening(mRecoListener);
+                iatDialog.show();
+            }
+        });
+
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+        Dao<User, Integer> userDao;
+        try {
+             userDao = databaseHelper.getUserDao();
+            userDao.createOrUpdate(new User("xiao1","asdasdas"));
+            userDao.createIfNotExists(new User("xiao2","asdasdas"));
+            userDao.createIfNotExists(new User("xiao3","asdasdas"));
+//            User user = userDao.queryForId(3);
+            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
+            Log.v("ormlite",users.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        ormlite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        permisstion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int flag = getPackageManager().checkPermission(Manifest.permission.RECORD_AUDIO, getPackageName());
+                if(flag == PackageManager.PERMISSION_DENIED){
+                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
+                }else if(flag == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(MainActivity.this, "直接开工", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == 123){
+            if(permissions[0].equals(Manifest.permission.RECORD_AUDIO)){
+
+                    if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+//                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
+                        boolean isSecond = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,permissions[0]);
+                        if(isSecond){
+                            ActivityCompat.requestPermissions(MainActivity.this,permissions,321);
+                        }else {
+                            Toast.makeText(MainActivity.this, "没开通权限", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(MainActivity.this, "开通权限,开工", Toast.LENGTH_SHORT).show();
+                    }
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private Student getStudent(int id) {
-        return new Student(id,"撒冷");
+        return new Student(id, "撒冷");
     }
 
-    class ThreadA implements Runnable{
+    class ThreadA implements Runnable {
         @Override
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 lock.lock();
                 System.out.println("首先输出1-3");
-                while(value<=3)
-                {
+                while (value <= 3) {
                     System.out.println(value++);
                 }
                 Condition456.signal();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
-            try
-            {
+            try {
                 lock.lock();
-                while(value<=6)
-                {
+                while (value <= 6) {
                     Condition789.await();
                 }
                 System.out.println("输出7-9");
-                while(value<=9)
-                {
+                while (value <= 9) {
                     System.out.println(value++);
                 }
                 Condition101112.signal();
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
         }
     }
 
-    class ThreadB implements Runnable{
+    // 用HashMap存储听写结果
+    private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
+
+    private void printResult(RecognizerResult results) {
+        String text = JsonParser.parseIatResult(results.getResultString());
+
+        String sn = null;
+        // 读取json结果中的sn字段
+        try {
+            JSONObject resultJson = new JSONObject(results.getResultString());
+            sn = resultJson.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mIatResults.put(sn, text);
+
+        StringBuffer resultBuffer = new StringBuffer();
+        for (String key : mIatResults.keySet()) {
+            resultBuffer.append(mIatResults.get(key));
+        }
+
+        mResultText.setText(resultBuffer.toString());
+        mResultText.setSelection(mResultText.length());
+    }
+
+    class ThreadB implements Runnable {
         @Override
-        public void run()
-        {
-            try
-            {
+        public void run() {
+            try {
                 lock.lock();
-                while(value<=3)
-                {
+                while (value <= 3) {
                     Condition456.await();
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally{
+            } finally {
                 lock.unlock();
             }
 
-            try{
+            try {
                 lock.lock();
                 System.out.println("输出4-6");
-                while(value<=6)
-                {
+                while (value <= 6) {
                     System.out.println(value++);
                 }
                 Condition789.signal();
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
 
-            try
-            {
+            try {
                 lock.lock();
-                while(value<=9)
-                {
+                while (value <= 9) {
                     Condition101112.await();
                 }
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
-            finally{
+            } finally {
                 lock.unlock();
             }
 
-            try{
+            try {
                 lock.lock();
                 System.out.println("输出10-12");
-                while(value<=12)
-                {
+                while (value <= 12) {
                     System.out.println(value++);
                 }
-            }
-            finally
-            {
+            } finally {
                 lock.unlock();
             }
         }
     }
-
-
-//    private void showToast() {
-//        try {
-//            Method method = obj.getClass().getDeclaredMethod("show", null);
-//            method.invoke(obj, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private void closeToast() {
-//        try {
-//            Method method = obj.getClass().getDeclaredMethod("hide", null);
-//            method.invoke(obj, null);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -569,7 +737,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         public void onSpringUpdate(Spring spring) {
             float mappedValue = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.8);
 //            Log.e("spring.getCurrentValue()",spring.getCurrentValue());
-            Log.e("WTF_mappedValue",String.valueOf(mappedValue));
+            Log.e("WTF_mappedValue", String.valueOf(mappedValue));
             View v = getSpringView(mCurrentTouchViewTag);
             if (v != null) {
                 v.setScaleX(mappedValue);

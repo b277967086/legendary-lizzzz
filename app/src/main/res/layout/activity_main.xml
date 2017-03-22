@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/rl"
-    tools:context="com.good.diaodiaode.tebiediao.MainActivity">
+    android:id="@+id/rl">
 
     <LinearLayout
         android:id="@+id/ll"
@@ -12,29 +10,39 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-        <Button
-            android:id="@+id/bt_takepic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="拍照" />
-        <Button
-            android:id="@+id/bt_showtoast"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="展示toast" />
 
-        <Button
-            android:id="@+id/bt_showclose"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="展示关闭" />
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/bt_takepic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拍照" />
+            <Button
+                android:id="@+id/bt_showtoast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展示toast" />
 
-        <Button
-            android:id="@+id/thread_help"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="线程协作" />
+            <Button
+                android:id="@+id/bt_showclose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="展示关闭" />
 
+            <Button
+                android:id="@+id/thread_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="线程协作" />
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
         <Button
             android:id="@+id/notification"
             android:layout_width="wrap_content"
@@ -58,6 +66,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="linkage" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/uploadProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="uploadProgress" />
+
+        <Button
+            android:id="@+id/kedaxunfei"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="kedaxunfei" />
+
+        <Button
+            android:id="@+id/ormlite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ormlite" />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/permisstion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="permisstion" />
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/mResultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!--<com.good.diaodiaode.tebiediao.SecondOrderBezier-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="600dp">-->
+
+        <!--</com.good.diaodiaode.tebiediao.SecondOrderBezier>-->
+
+        <com.good.diaodiaode.tebiediao.WaterDropView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            ></com.good.diaodiaode.tebiediao.WaterDropView>
     </LinearLayout>
 
 </RelativeLayout>

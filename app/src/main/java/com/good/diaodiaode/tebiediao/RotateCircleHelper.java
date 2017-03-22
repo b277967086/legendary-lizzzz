@@ -45,7 +45,7 @@ public class RotateCircleHelper {
         init(mContext);
     }
 
-    /*public static RotateCircleHelper getInstance(Context ctx) {
+    /*public static RotateCircleHelper create(Context ctx) {
         if (mRotateCircleHelper == null) {
             synchronized (RotateCircleHelper.class) {
                 if (mRotateCircleHelper == null) {
@@ -91,6 +91,42 @@ public class RotateCircleHelper {
         return animator;
     }
 
+    //创建的开始动画
+    private AnimatorSet createStartAnimator(View view) {
+
+        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(view, "alpha", 0, 0.6f);
+        ObjectAnimator animTranx = ObjectAnimator.ofFloat(view, "translationY", 0f, -50f, 0f);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animAlpha, animTranx);
+
+        set.setDuration(500);
+        set.setInterpolator(decelerateInterpolator);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                if (mAnimatorSetList != null && mAnimatorSetList.get(0) != null)
+                    mAnimatorSetList.get(0).start();
+            }
+        });
+        return set;
+    }
+
+    //创建的结束动画
+    private ObjectAnimator createEndAnimator(View view) {
+        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(view, "alpha", 0.6f, 0f);
+        animAlpha.setDuration(500);
+        animAlpha.setInterpolator(accelerateInterpolator);
+        animAlpha.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mDialog.dismiss();
+            }
+        });
+        return animAlpha;
+    }
+
+
+    //创建文字的动画集
     private ArrayList<AnimatorSet> createAnimatorSet(String[] texts) {
 
         ArrayList<AnimatorSet> mAnimatorSetList = new ArrayList<>();
@@ -161,40 +197,6 @@ public class RotateCircleHelper {
         }
     }
 
-    private AnimatorSet createStartAnimator(View view) {
-
-        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(view, "alpha", 0, 0.6f);
-        ObjectAnimator animTranx = ObjectAnimator.ofFloat(view, "translationY", 0f, -50f, 0f);
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(animAlpha, animTranx);
-
-        set.setDuration(500);
-        set.setInterpolator(decelerateInterpolator);
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (mAnimatorSetList != null && mAnimatorSetList.get(0) != null)
-                    mAnimatorSetList.get(0).start();
-            }
-        });
-        return set;
-    }
-
-    private ObjectAnimator createEndAnimator(View view) {
-
-        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(view, "alpha", 0.6f, 0f);
-        animAlpha.setDuration(500);
-        animAlpha.setInterpolator(accelerateInterpolator);
-        animAlpha.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-//                mPopupWindow.dismiss();
-                mDialog.dismiss();
-            }
-        });
-        return animAlpha;
-    }
-
     private void init(Context ctx) {
         LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -204,7 +206,7 @@ public class RotateCircleHelper {
 
         mDialog = new Dialog(ctx, R.style.PADialog);
         //设置成全局的dialog
-        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY);
+        mDialog.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
         //去掉dialog区域外的灰色透明蒙版
         mDialog.getWindow().clearFlags( WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 
