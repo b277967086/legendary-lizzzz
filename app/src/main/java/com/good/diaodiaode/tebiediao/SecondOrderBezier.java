@@ -32,7 +32,8 @@ public class SecondOrderBezier extends View {
     private float mEndPointX;
     private float mEndPiuntY;
 
-    private Path mPath = new Path();
+    private Path mPath1 = new Path();
+    private Path mPath2 = new Path();
 
     public SecondOrderBezier(Context context) {
         super(context);
@@ -62,40 +63,44 @@ public class SecondOrderBezier extends View {
         super.onSizeChanged(w, h, oldw, oldh);
 
         //起始和终点的坐标
-        mStartPointX = w / 4;
-        mStartPointY = h /2 - 200;
+        mStartPointX = w / 7 * 3;
+        mStartPointY = h / 2 - 200;
 
-        mEndPointX = w / 4 * 3;
-        mEndPiuntY = h /2 - 200;
+        mEndPointX = w / 7 * 4;
+        mEndPiuntY = h / 2 - 200;
+
+        mAuxiliaryX2 = w / 2;
+        mAuxiliaryY2 = 200;
+
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //重置绘制路线
-        mPath.reset();
+        mPath1.reset();
         //mpath绘制的绘制起点
-        mPath.moveTo(mStartPointX, mStartPointY);
+        mPath1.moveTo(mStartPointX, mStartPointY);
         //绘制辅助控制点
-       canvas.drawPoint(mAuxiliaryX, mAuxiliaryY, mPaintAuxiliary);
-       canvas.drawPoint(mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliary);
+        canvas.drawPoint(mAuxiliaryX, mAuxiliaryY, mPaintAuxiliary);
+//        canvas.drawPoint(mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliary);
         canvas.drawText("控制点1", mAuxiliaryX, mAuxiliaryY, mPaintAuxiliaryText);
-        canvas.drawText("控制点2", mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliaryText);
+//        canvas.drawText("控制点2", mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliaryText);
         canvas.drawText("起始点", mStartPointX, mStartPointY, mPaintAuxiliaryText);
         canvas.drawText("终止点", mEndPointX, mEndPiuntY, mPaintAuxiliaryText);
 
         //辅助线
         canvas.drawLine(mStartPointX, mStartPointY, mAuxiliaryX, mAuxiliaryY, mPaintAuxiliary);
         canvas.drawLine(mEndPointX, mEndPiuntY, mAuxiliaryX, mAuxiliaryY, mPaintAuxiliary);
-        canvas.drawLine(mAuxiliaryX, mAuxiliaryY, mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliary);
+//        canvas.drawLine(mAuxiliaryX, mAuxiliaryY, mAuxiliaryX2, mAuxiliaryY2, mPaintAuxiliary);
         //二阶贝塞尔、线，实现绘制贝塞尔平滑曲线；previousX, previousY为操作点，cX, cY为终点
-        mPath.cubicTo(mAuxiliaryX, mAuxiliaryY,mAuxiliaryX2, mAuxiliaryY2,mEndPointX, mEndPiuntY);
-        canvas.drawPath(mPath, mPaintBezier);
+        mPath1.quadTo(mAuxiliaryX, mAuxiliaryY, mEndPointX, mEndPiuntY);
+        canvas.drawPath(mPath1, mPaintBezier);
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()){
+        switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 mAuxiliaryX = event.getX();
                 mAuxiliaryY = event.getY();

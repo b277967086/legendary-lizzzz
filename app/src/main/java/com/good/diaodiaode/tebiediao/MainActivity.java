@@ -1,20 +1,24 @@
 package com.good.diaodiaode.tebiediao;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -26,6 +30,8 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
+import com.good.diaodiaode.tebiediao.db.DatabaseHelper;
+import com.good.diaodiaode.tebiediao.db.User;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.InitListener;
 import com.iflytek.cloud.RecognizerListener;
@@ -36,6 +42,7 @@ import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.j256.ormlite.dao.Dao;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,9 +50,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private static final int NOTIFICATION_FLAG = 1;
     Field field = null;
     Object obj = null;
-    private AccelerateDecelerateInterpolator accelerateDecelerateInterpolator = new AccelerateDecelerateInterpolator();
+    private DecelerateInterpolator accelerateDecelerateInterpolator = new DecelerateInterpolator();
     private RotateCirCleView rcc;
     private RotateCircleHelper mInstance;
 
@@ -92,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private ArrayList<LinkageDataBean> datas;
     private Button kedaxunfei;
     private EditText mResultText;
+    private Button ormlite;
+    private Button permisstion;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -136,6 +147,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         uploadProgress = (Button) findViewById(R.id.uploadProgress);
         kedaxunfei = (Button) findViewById(R.id.kedaxunfei);
         mResultText = (EditText) findViewById(R.id.mResultText);
+        ormlite = (Button) findViewById(R.id.ormlite);
+        permisstion = (Button) findViewById(R.id.permisstion);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -480,6 +493,64 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 iatDialog.show();
             }
         });
+
+        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+        Dao<User, Integer> userDao;
+        try {
+             userDao = databaseHelper.getUserDao();
+            userDao.createOrUpdate(new User("xiao1","asdasdas"));
+            userDao.createIfNotExists(new User("xiao2","asdasdas"));
+            userDao.createIfNotExists(new User("xiao3","asdasdas"));
+//            User user = userDao.queryForId(3);
+            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
+            Log.v("ormlite",users.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        ormlite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        permisstion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int flag = getPackageManager().checkPermission(Manifest.permission.RECORD_AUDIO, getPackageName());
+                if(flag == PackageManager.PERMISSION_DENIED){
+                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
+                }else if(flag == PackageManager.PERMISSION_GRANTED){
+                    Toast.makeText(MainActivity.this, "直接开工", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == 123){
+            if(permissions[0].equals(Manifest.permission.RECORD_AUDIO)){
+
+                    if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+//                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
+                        boolean isSecond = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,permissions[0]);
+                        if(isSecond){
+                            ActivityCompat.requestPermissions(MainActivity.this,permissions,321);
+                        }else {
+                            Toast.makeText(MainActivity.this, "没开通权限", Toast.LENGTH_SHORT).show();
+                        }
+                    }else if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                        Toast.makeText(MainActivity.this, "开通权限,开工", Toast.LENGTH_SHORT).show();
+                    }
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private Student getStudent(int id) {
