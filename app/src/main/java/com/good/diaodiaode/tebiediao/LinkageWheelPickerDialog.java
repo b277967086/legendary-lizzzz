@@ -41,14 +41,12 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
     @Override
     public void onResume() {
         super.onResume();
-        int height = getResources().getDimensionPixelSize(R.dimen.dp230);
-
         Window window = getDialog().getWindow();
 //        //设置成全局的dialog
 //        window.setType(WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY);
 //        //去掉dialog区域外的灰色透明蒙版
 //        window.clearFlags( WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, height);//Here!
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);//Here!
         window.setGravity(Gravity.BOTTOM);
     }
 
@@ -92,6 +90,7 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
         int i = v.getId();
         if (i == R.id.tv_cancel) {
             dismiss();
+            getDialog().hide();
         } else if (i == R.id.tv_sure) {
             sureClicked();
         }
@@ -112,6 +111,7 @@ public class LinkageWheelPickerDialog extends DialogFragment implements View.OnC
             mPickerConfig.mOnSelectChangedListener.onSelectChanged(currentWheel1, currentWheel2, currentWheel3);
         }
         dismiss();
+        getDialog().hide();
     }
 
     public static class Builder {

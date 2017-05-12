@@ -28,8 +28,8 @@ dependencies {
     compile 'com.facebook.rebound:rebound:0.3.6'
     compile 'io.reactivex:rxjava:1.0.14'
     compile 'io.reactivex:rxandroid:1.0.1'
-    apt "com.pingan.haofang:androidannotations:1.0.7"
-    compile "com.pingan.haofang:androidannotations-api:1.0.9"
+//    apt "com.pingan.haofang:androidannotations:1.0.7"
+//    compile "com.pingan.haofang:androidannotations-api:1.0.9"
     compile files('src/main/jniLibs/Msc.jar')
     compile files('src/main/jniLibs/ormlite-android-5.0.jar')
     compile files('src/main/jniLibs/ormlite-core-5.0.jar')
