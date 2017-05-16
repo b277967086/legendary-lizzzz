@@ -191,7 +191,7 @@ public class WheelView extends View {
         mPaintRectCenter.setAntiAlias(true);
         mPaintRectCenter.setStyle(Paint.Style.FILL);
 
-        mLineRightMar = context.getResources().getDimensionPixelSize(R.dimen.activity_horizontal_margin);
+        mLineRightMar = context.getResources().getDimensionPixelSize(R.dimen.dp9);
 
 
         defaultColor = DefaultConfig.TV_NORMAL_COLOR;
@@ -493,6 +493,7 @@ public class WheelView extends View {
      * Initializes resources
      */
     private void initResourcesIfNecessary() {
+        setBackgroundResource(R.drawable.yuyue_time_dialog_bottom);
     }
 
     /**
@@ -902,10 +903,10 @@ public class WheelView extends View {
         TextView textView = (TextView) view;
         if (index == currentItem) {
             textView.setTextColor(selectorColor);
-//            textView.setTextSize(selectorSize);
+            textView.setTextSize(selectorSize);
         } else {
             textView.setTextColor(defaultColor);
-//            textView.setTextSize(defaultSize);
+            textView.setTextSize(defaultSize);
         }
     }
 

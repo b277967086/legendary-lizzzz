@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -104,6 +105,18 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button ormlite;
     private Button permisstion;
 
+    IFuckInterface.Stub stub  = new IFuckInterface.Stub() {
+        @Override
+        public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
+
+        }
+
+        @Override
+        public int getInt() throws RemoteException {
+            return 7782;
+        }
+    };
+
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -131,6 +144,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        NumberUtils.getBAt(4);
+        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
+
+
 
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
 
@@ -374,15 +391,15 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //        }
 
         mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
-                .setCancelStringId("关闭")
-                .setTitleStringId("取消当前预约")
-                .setTitleIsShow(true)
-                .setCyclic(false)
-                .setSureStringId("确定")
-                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
-                .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
-                .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
-                .setWheelItemTextSelectorSize(14)
+//                .setCyclic(false)
+//                .setCancelStringId("关闭")
+//                .setTitleStringId("取消当前预约")
+//                .setTitleIsShow(true)
+//                .setSureStringId("确定")
+//                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
+//                .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
+//                .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
+//                .setWheelItemTextSelectorSize(14)
                 .setCallBack(new OnSelectChangedListener() {
                     @Override
                     public void onSelectChanged(int... selectItems) {

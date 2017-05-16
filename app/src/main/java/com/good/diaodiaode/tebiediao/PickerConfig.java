@@ -19,7 +19,7 @@ public class PickerConfig {
     public int mWheelTVNormalColor = DefaultConfig.TV_NORMAL_COLOR;
     public int mWheelTVSelectorColor = DefaultConfig.TV_SELECTOR_COLOR;
     public int mWheelTVSize = DefaultConfig.TV_SIZE;
-    public int mWheelTVSelectorSize = DefaultConfig.TV_SIZE;
+    public int mWheelTVSelectorSize = DefaultConfig.TV_SELECTED_SIZE;
     public boolean cyclic = DefaultConfig.CYCLIC;
 
     public String mYear = DefaultConfig.YEAR;
@@ -58,6 +58,8 @@ public class PickerConfig {
 
 
     public OnSelectChangedListener mOnSelectChangedListener;
+
+//    public OnDateSetListener mCallBack;
 
     public boolean mTitleIsShow = true;
 }

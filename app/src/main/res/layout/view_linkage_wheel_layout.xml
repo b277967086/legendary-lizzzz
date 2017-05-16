@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="44dp"
         android:orientation="horizontal">
 
         <TextView
@@ -15,10 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text=""
-            android:textColor="@android:color/white"
+            android:paddingLeft="16dp"
+            android:text="取消"
+            android:textColor="@color/text_black_222222"
             android:textSize="14sp" />
 
         <TextView
@@ -26,32 +26,32 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.0"
-            android:gravity="center"
+            android:gravity="center_vertical|right"
             android:text=""
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textColor="@color/text_black_222222"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_sure"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text=""
-            android:textColor="@android:color/white"
+            android:paddingLeft="46dp"
+            android:paddingRight="16dp"
+            android:text="确定"
+            android:textColor="@color/main_blue_6281c2"
             android:textSize="14sp" />
 
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="190dp">
+        android:layout_height="168dp">
 
         <LinearLayout
             android:id="@+id/linear_wheel"
             android:layout_width="match_parent"
-            android:layout_height="190dp"
+            android:layout_height="168dp"
             android:layout_gravity="center_horizontal"
             android:background="@android:color/white"
             android:orientation="horizontal">

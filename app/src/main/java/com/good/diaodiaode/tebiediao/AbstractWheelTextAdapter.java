@@ -91,7 +91,7 @@ public abstract class AbstractWheelTextAdapter extends AbstractWheelAdapter {
         this.context = context;
         itemResourceId = itemResource;
         itemTextResourceId = itemTextResource;
-        padding = context.getResources().getDimensionPixelSize(R.dimen.dp9);
+        padding = context.getResources().getDimensionPixelSize(R.dimen.dp7);
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
