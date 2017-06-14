@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 //        NumberUtils.getBAt(4);
-        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
+//        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
 
 
 
