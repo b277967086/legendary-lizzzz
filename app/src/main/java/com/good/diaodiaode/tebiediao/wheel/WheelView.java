@@ -493,7 +493,7 @@ public class WheelView extends View {
      * Initializes resources
      */
     private void initResourcesIfNecessary() {
-        setBackgroundResource(R.drawable.yuyue_time_dialog_bottom);
+        setBackgroundResource(R.drawable.background_alertdialog);
     }
 
     /**

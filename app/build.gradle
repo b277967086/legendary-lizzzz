@@ -33,4 +33,5 @@ dependencies {
     compile files('src/main/jniLibs/Msc.jar')
     compile files('src/main/jniLibs/ormlite-android-5.0.jar')
     compile files('src/main/jniLibs/ormlite-core-5.0.jar')
+    compile 'com.squareup:javapoet:1.8.0'
 }
