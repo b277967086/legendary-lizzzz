@@ -33,4 +33,6 @@ dependencies {
     compile files('src/main/jniLibs/Msc.jar')
     compile files('src/main/jniLibs/ormlite-android-5.0.jar')
     compile files('src/main/jniLibs/ormlite-core-5.0.jar')
+    compile 'com.google.auto:auto-common:0.6'
+    compile project(path: ':javapotcompiler')
 }

@@ -146,9 +146,6 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_main);
 //        NumberUtils.getBAt(4);
 //        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
-
-
-
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
 
         bt = (Button) findViewById(R.id.bt_takepic);

@@ -12,13 +12,13 @@ buildscript {
         // in the individual module build.gradle files
 
         // androidannotation: replace with the current version of the android-apt plugin
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
 allprojects {
     repositories {
-//        maven {  url "http://maven.ipo.com/nexus/content/groups/public/"  }
+        maven {  url "http://maven.ipo.com/nexus/content/groups/public/"  }
         jcenter()
     }
 }
