@@ -70,6 +70,7 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+@ContentView(id = R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private File mPicFile;
@@ -143,7 +144,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        ContentViewUtils.init(this);
+//        setContentView(R.layout.activity_main);
 //        NumberUtils.getBAt(4);
 //        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
