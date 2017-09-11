@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" filepath="$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" filepath="$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" />
       <module fileurl="file://$PROJECT_DIR$/legendary-lizzzz.iml" filepath="$PROJECT_DIR$/legendary-lizzzz.iml" />
     </modules>
