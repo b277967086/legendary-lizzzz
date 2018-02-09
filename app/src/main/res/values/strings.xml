@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">tebiediao</string>
+    <string name="title_activity_list_view">ListViewActivity</string>
 </resources>
