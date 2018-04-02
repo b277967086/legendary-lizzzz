@@ -60,5 +60,7 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         mWebView.loadData("","text/html","UTF-8");
+//        mWebView.loadUrl("file:///android_asset/test.html");
+        mWebView.loadUrl("http://www.baidu.com");
     }
 }

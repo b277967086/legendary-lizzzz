@@ -23,6 +23,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
@@ -36,4 +37,8 @@ dependencies {
     compile files('src/main/jniLibs/ormlite-core-5.0.jar')
     compile 'com.google.auto:auto-common:0.6'
     compile project(path: ':javapotcompiler')
+
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.alibaba:fastjson:1.1.46.android'
+    compile 'com.taobao.android:weex_sdk:0.5.1@aar'
 }
