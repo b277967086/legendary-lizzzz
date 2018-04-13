@@ -105,8 +105,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private EditText mResultText;
     private Button ormlite;
     private Button permisstion;
+    private Button singleinstance;
 
-    IFuckInterface.Stub stub  = new IFuckInterface.Stub() {
+    IFuckInterface.Stub stub = new IFuckInterface.Stub() {
         @Override
         public void basicTypes(int anInt, long aLong, boolean aBoolean, float aFloat, double aDouble, String aString) throws RemoteException {
 
@@ -166,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         mResultText = (EditText) findViewById(R.id.mResultText);
         ormlite = (Button) findViewById(R.id.ormlite);
         permisstion = (Button) findViewById(R.id.permisstion);
+        singleinstance = (Button) findViewById(R.id.singleinstance);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -325,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Observable.from(persons).map(new Func1<Person, Student>() {
                     @Override
                     public Student call(Person person) {
-                        return  getStudent(person.getId());
+                        return getStudent(person.getId());
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                         .flatMap(new Func1<Student, Observable<String>>() {
@@ -514,13 +516,13 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
         Dao<User, Integer> userDao;
         try {
-             userDao = databaseHelper.getUserDao();
-            userDao.createOrUpdate(new User("xiao1","asdasdas"));
-            userDao.createIfNotExists(new User("xiao2","asdasdas"));
-            userDao.createIfNotExists(new User("xiao3","asdasdas"));
+            userDao = databaseHelper.getUserDao();
+            userDao.createOrUpdate(new User("xiao1", "asdasdas"));
+            userDao.createIfNotExists(new User("xiao2", "asdasdas"));
+            userDao.createIfNotExists(new User("xiao3", "asdasdas"));
 //            User user = userDao.queryForId(3);
             List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
-            Log.v("ormlite",users.toString());
+            Log.v("ormlite", users.toString());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -537,11 +539,23 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             @Override
             public void onClick(View v) {
                 int flag = getPackageManager().checkPermission(Manifest.permission.RECORD_AUDIO, getPackageName());
-                if(flag == PackageManager.PERMISSION_DENIED){
-                    ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
-                }else if(flag == PackageManager.PERMISSION_GRANTED){
+                if (flag == PackageManager.PERMISSION_DENIED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
+                } else if (flag == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(MainActivity.this, "直接开工", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        singleinstance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                int i = 0;
+//                while (i < 10) {
+//                    SingleUtils.getInstance();
+//                    i++;
+//                }
+                SingleUtils.test();
             }
         });
 
@@ -550,20 +564,20 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if(requestCode == 123){
-            if(permissions[0].equals(Manifest.permission.RECORD_AUDIO)){
+        if (requestCode == 123) {
+            if (permissions[0].equals(Manifest.permission.RECORD_AUDIO)) {
 
-                    if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+                if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
 //                        ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.RECORD_AUDIO},123);
-                        boolean isSecond = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,permissions[0]);
-                        if(isSecond){
-                            ActivityCompat.requestPermissions(MainActivity.this,permissions,321);
-                        }else {
-                            Toast.makeText(MainActivity.this, "没开通权限", Toast.LENGTH_SHORT).show();
-                        }
-                    }else if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                        Toast.makeText(MainActivity.this, "开通权限,开工", Toast.LENGTH_SHORT).show();
+                    boolean isSecond = ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, permissions[0]);
+                    if (isSecond) {
+                        ActivityCompat.requestPermissions(MainActivity.this, permissions, 321);
+                    } else {
+                        Toast.makeText(MainActivity.this, "没开通权限", Toast.LENGTH_SHORT).show();
                     }
+                } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(MainActivity.this, "开通权限,开工", Toast.LENGTH_SHORT).show();
+                }
             }
         }
 
