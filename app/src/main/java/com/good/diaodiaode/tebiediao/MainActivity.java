@@ -106,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button ormlite;
     private Button permisstion;
     private Button singleinstance;
+    private Button singleInstance;
+    private Button video;
 
     IFuckInterface.Stub stub = new IFuckInterface.Stub() {
         @Override
@@ -168,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         ormlite = (Button) findViewById(R.id.ormlite);
         permisstion = (Button) findViewById(R.id.permisstion);
         singleinstance = (Button) findViewById(R.id.singleinstance);
+        singleInstance = (Button) findViewById(R.id.singleInstance);
+        video = (Button) findViewById(R.id.video);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -556,6 +560,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //                    i++;
 //                }
                 SingleUtils.test();
+            }
+        });
+
+        singleInstance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SecActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
+                startActivity(intent);
             }
         });
 

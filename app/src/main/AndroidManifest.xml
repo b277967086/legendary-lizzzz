@@ -29,16 +29,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
-        <activity android:name=".SecActivity" />
-        <activity android:name=".Main2Activity"></activity>
+        <activity android:name=".SecActivity"
+            android:launchMode="singleInstance"/>
+        <activity android:name=".Main2Activity">
+        </activity>
 
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -54,6 +56,9 @@
 
         <activity android:name=".RoundViewActivity">
 
+        </activity>
+
+        <activity android:name=".VideoActivity">
         </activity>
     </application>
 
