@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <title>测试</title>
+        <script type="text/javascript" src="//s1.ymatou.com/bpm/build/ymtapi_unity/3.0.5/ymtapi_unity.js"></script>
+        <script type="text/javascript">
+            //function test() {
+            	//history.pushState(null,'','');
+            //    var time = Date.parse(Date()) + 7200000;
+            //    alert(time);
+            //     ymt.enterPage({
+            //     'type': 1});
+            // }
+        	//}
+
+            
+
+            function enterInterestMap() {
+                // 选择喜好---进入我的兴趣
+                ymt.interestMap();
+
+
+            }
+
+            function enterPersonal() {
+                // 设置昵称--进入个人资料
+
+                ymt.enterPage({
+                    "type": 5,
+                });
+
+                //type==5时进入个人资料, 不需要附加参数
+                //PersonalCenterViewController
+            }
+
+            function enterAvatar() {
+                // 上传头像--进入个人头像
+                ymt.enterPage({
+                    "type": 6,
+                });
+
+                //type==6时进入个人头像, 不需要附加参数
+                //PersonalAvatarController
+            }
+
+            function enterThird() {
+                // 绑定微信--进入我的第三方账号
+                ymt.enterPage({
+                    "type": 7,
+                });
+
+                //type==7时进入我的第三方账号, 不需要附加参数
+                //ThirdAccountViewController
+            }
+
+            function enterAddress() {
+                // 添加身份信息--进入我的收货地址
+                ymt.enterPage({
+                    "type": 8,
+                });
+
+                //type==8时进入我的收货地址, 不需要附加参数
+                //AddressManageViewController
+            }
+
+            function enterIDCard() {
+                // 添加身份信息--进入上传身份证
+                ymt.enterPage({
+                    "type": 9,
+                });
+
+                //type==9时进入上传身份证, 不需要附加参数
+                //IDCardEditViewController
+            }
+
+
+            function goBack() {
+                ymt.closeWin();
+            }
+
+            function enterTestPage() {
+                ymt.openWin({
+                    "url": "http://m.ymatou.com/marketing/page/pwd_create"
+                });
+            }
+
+            function modifyRefund() {
+                ymt.enterPage({"type": 4, "param": "TH1801300079"});
+            }
+
+            function setCookie() {
+               // alert('abc');
+                var exdate=new Date()
+                exdate.setDate(exdate.getDate() + 365)
+                document.cookie= "customcookie=customcookie" + "; expires="+exdate.toGMTString()
+                alert(document.cookie);
+            }
+
+        	function enterCart() {
+                alert(document.documentElement.clientHeight);
+        		ymt.enterPage({
+        			"type": 1
+        		});
+        	}
+
+        	function enterCollect() {
+        		ymt.enterPage({
+        			"type": 2
+        		});
+        	}
+
+        	function calendarEvent() {
+                var start = Date.parse(Date()) + 68000;// + 7200000;
+                var end = start + 600000;
+        		ymt.calendarEvent({
+        			"id": "12345",
+        			"title": "测试日历提醒",
+        			"startTime": start,   // 活动开始时间戳，毫秒级
+        			"endTime": end, // 结束时间戳，毫秒级
+        			"alarm": 1,                   // 开始前几分钟提醒
+					"url": "http://m.ymatou.com/home/tab/4"	// url需要确认使用schema还是deeplink
+        		});
+        	}
+
+            function screenshot() {
+                ymt.screenShot();
+            }
+
+            function requestGet() {
+                var param = {
+                    "keys[0]": "compensationTens",
+                    "keys[1]": "vipMemberDetailUrl",
+                    "keys[2]": "userExpDetailUrl"
+                }
+
+                request("http://app.ymatou.com/api/globalconf/businessconfiglist", "get", param, null);
+            }
+
+            function requestPost() {
+                var param = {
+
+                }
+
+                request("", "post", param, null);
+            }
+
+            function request(url, method, param, header) {
+                ymt.native_request({
+                    "url": url,
+                    "method": method,
+                    "params": param,
+                    "header": header
+                });
+            }
+
+            YmtApi.on('native_response', function(data) {
+                alert(JSON.stringify(data));
+            });
+
+            function shareUrlweibo() {
+                // 分享到微博(图片是链接)
+                ymt.shareWith(getshareData(3, 0, false));
+            }
+
+            function shareweibo() {
+                // 分享到微博(图片是base64编码)
+                ymt.shareWith(getshareData(3, 0, true));
+            }
+
+            function shareImageUrlTimeline() {
+                // 分享纯图到朋友圈(图片是链接)
+                ymt.shareWith(getshareData(2, 1, false));
+            }
+
+            function shareImageTimeline() {
+                // 分享纯图到朋友圈(图片是base64编码)
+                ymt.shareWith(getshareData(2, 1, true));
+            }
+
+            function shareUrlTimeline() {
+                // 分享图文到朋友圈(图片是链接)
+                ymt.shareWith(getshareData(2, 0, false));
+            }
+
+            function shareTimeline() {
+                // 分享图文到朋友圈(图片是base64编码)
+                ymt.shareWith(getshareData(2, 0, true));
+            }
+
+            function shareImageUrlSession() {
+                // 分享纯图到微信好友(图片是链接)
+                ymt.shareWith(getshareData(1, 1, false));
+            }
+
+            function shareImageSession() {
+                // 分享纯图到微信好友(图片是base64编码)
+                ymt.shareWith(getshareData(1, 1, true));
+            }
+
+            function shareUrlSession() {
+                // 分享图文到微信好友(图片是链接)
+                ymt.shareWith(getshareData(1, 0, false));
+            }
+
+            function shareSession() {
+                // 分享图文到微信好友(图片是base64编码)
+                ymt.shareWith(getshareData(1, 0, true));
+            }
+
+            function shareMini() {
+                // 分享图文到微信好友(图片是base64编码)
+                ymt.shareWith(getshareData(1, 2, true));
+            }
+
+//YmtApi.off('shareEvent')
+            YmtApi.on('shareEvent', function(data) {
+                alert(JSON.stringify(data));
+            });
+
+        	YmtApi.on('calendarEvent', function(data) {
+        		alert(JSON.stringify(data));
+                var item = document.getElementById("calendarTest");
+                if (data != null && item != null) {
+                    if (data.success == 'true') {
+                        item.setAttribute('disabled','disabled');
+                        item.setAttribute('value','已添加提醒');
+                    } else if (data.success == 'false') {
+                        alert(data.success=='true');
+                    }
+                }
+        	});
+            function enterVideoLive() {
+                window.location = 'https://jump.ymatou.com/dp?link=%3Ftype%3Dshipingzhibo%26liveid%3D10760&target=app&redirect=http%3A%2F%2Fdownload.app.ymatou.com%2Findex.aspx%3Ffrom%3Dinapp25' //'https://app.ymatou.com/ad/adputpage?gid=27&utm_os=ios&utm_crid=50&utm_medium=cpc&utm_source=test'//'ymtoversea://app.ymt.com?key=1'//'http://jump.ymatou.com/dp?link=%3Ftype%3Dhuibo%26liveid%3D10565&target=app'
+            }
+
+            function enterwebview() {
+                window.location = 'http://jump.ymatou.com/dp?link=https%3a%2f%2fm.ymatou.com%2fnote%2fdetail%3fNoteId%3d100783960%26winType%3d2&target=h5'
+            }
+
+            function getshareData(platform, style, useBase64) {
+                 //"platform": 0,    // 0:微博 1:微信好友 2:微信朋友圈
+                //"style": 0,   // 0:分享图文加链接 1:分享纯图
+
+                var link = ""
+                var mini = null;
+                if (style == 0 || style == 2) {
+                    link = "http://m.ymatou.com/zhibo"
+                }
+                if (style == 2) {
+                    mini = {
+                        "userName": "gh_4e2baef01f0f",
+                        "path": "pages/home"
+                    }
+                }
+                var pic = "http://pic1.ymatou.com/G01/M00/31/DE/rBBlD1jUkCCABFGaAAC5sSBknI0939_28_13_o.jpg"
+                if (useBase64) {
+                    pic = "iVBORw0KGgoAAAANSUhEUgAAAFUAAABVCAYAAAA49ahaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTcgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDIxNDg5Q0RENTY3MTFFNzhCNUZFNThCNTNDREM4QUIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDIxNDg5Q0VENTY3MTFFNzhCNUZFNThCNTNDREM4QUIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDowMjE0ODlDQkQ1NjcxMUU3OEI1RkU1OEI1M0NEQzhBQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDowMjE0ODlDQ0Q1NjcxMUU3OEI1RkU1OEI1M0NEQzhBQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PrUXXzoAABCSSURBVHja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"
+                }
+
+                var obj = {
+                    "platform": platform,
+                    "style": style,
+                    "title": "测试标题",
+                    "content": "分享内容",
+                    "pic": pic,
+                    "miniProgram": mini,
+                    "link": link,
+                    "showMessage": true,
+                    "tag": "标记"
+                }
+                alert(JSON.stringify(obj));
+                return obj;
+            }
+        </script>
+    </head>
+    <!-- <body onLoad="setCookie()"> -->
+    <body>
+    <p>测试页面</p>
+    <!-- <button type="button" onclick="test()">Click Me!</button> -->
+    <!-- <button type="button" onclick="enterCart()">进入购物车</button> -->
+    <!-- <button type="button" onclick="enterCollect()">进入我的收藏</button> -->
+    <!-- <input id="calendarTest" type="button" onclick="calendarEvent()" value="添加日历提醒"> -->
+    <!-- <button type="button" onclick='enterVideoLive()'>打开视频直播</button> -->
+    <!-- <button type="button" onclick='screenshot()'>截屏</button> -->
+    <!-- <button type="button" onclick='shareUrlweibo()'>分享到微博(图片是链接)</button>
+    <p>
+    <button type="button" onclick='shareweibo()'>分享到微博(图片是base64编码)</button>
+    <p>
+    <button type="button" onclick='shareImageUrlTimeline()'>分享纯图到朋友圈(图片是链接)</button>
+    <p>
+    <button type="button" onclick='shareImageTimeline()'>分享纯图到朋友圈(图片是base64编码)</button>
+    <p>
+    <button type="button" onclick='shareUrlTimeline()'>分享图文到朋友圈(图片是链接)</button>
+    <p>
+    <button type="button" onclick='shareTimeline()'>分享图文到朋友圈(图片是base64编码)</button>
+    <p>
+    <button type="button" onclick='shareImageUrlSession()'>分享纯图到微信好友(图片是链接)</button>
+    <p>
+    <button type="button" onclick='shareImageSession()'>分享纯图到微信好友(图片是base64编码)</button>
+    <p>
+    <button type="button" onclick='shareUrlSession()'>分享图文到微信好友(图片是链接)</button>
+    <p>
+    <button type="button" onclick='shareSession()'>分享图文到微信好友(图片是base64编码)</button>
+    <p>
+    <button type="button" onclick='shareMini()'>分享小程序到微信好友(图片是base64编码)</button>
+    <p>
+        <button type="button" onclick='requestGet()'>Get接口测试</button>
+    <p>
+        <a href='https://jump.ymatou.com/dp?link=%3Ftype%3Dshipingzhibo%26liveid%3D10760&target=app'>打开视频直播</a>
+        <p>
+    <a href='http://m.ymatou.com/home/tab/4'>打开个人中心</a> -->
+    
+    <button type="button" onclick="enterPersonal()">进入个人资料</button>
+    <p>
+    <button type="button" onclick='enterInterestMap()'>进入我的兴趣</button>
+    <p>
+        <button type="button" onclick='enterAvatar()'>进入个人头像</button>
+    <p>
+        <button type="button" onclick='enterThird()'>进入第三方帐户</button>
+    <p>
+        <button type="button" onclick='enterAddress()'>进入我的收货地址</button>
+    <p>
+        <button type="button" onclick='enterIDCard()'>进入上传身份证</button>
+    <p>
+</body>
+</html>

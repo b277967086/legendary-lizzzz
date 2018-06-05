@@ -5,6 +5,16 @@
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+<<<<<<< HEAD
+=======
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/javapotcompiler" />
+          </set>
+        </option>
+>>>>>>> dab9933e5ba0b771d104cc82e77e65a21e291f3c
         <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>

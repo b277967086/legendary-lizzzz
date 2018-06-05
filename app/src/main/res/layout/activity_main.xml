@@ -103,8 +103,31 @@
                 android:layout_height="wrap_content"
                 android:text="permisstion" />
 
+            <Button
+                android:id="@+id/singleinstance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="单例" />
+
+            <Button
+                android:id="@+id/singleInstance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="singleInstance" />
+
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="video" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/mResultText"
