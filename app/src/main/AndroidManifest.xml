@@ -21,6 +21,8 @@
     <!-- 读取联系人权限，上传联系人需要用到此权限 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".MyApplacation"
         android:allowBackup="true"
@@ -34,13 +36,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-        <activity android:name=".SecActivity"
-            android:launchMode="singleInstance"/>
-        <activity android:name=".Main2Activity">
-        </activity>
+        <activity
+            android:name=".SecActivity"
+            android:launchMode="singleInstance" />
+        <activity android:name=".Main2Activity" />
+        <activity android:name=".Main3Activity" />
 
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -50,16 +51,37 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".WebViewActivity">
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".RoundViewActivity" />
+        <activity android:name=".VideoActivity" />
+        <activity android:name=".TestManifestActivity">
+            <intent-filter>
+                <action android:name="com.good.diaodiaode.tebiediao.TestManifestActivity" />
 
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="abb" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="qtt" />
+            </intent-filter>
         </activity>
 
-        <activity android:name=".RoundViewActivity">
+        <service
+            android:name=".FloatWindowService"
+            android:enabled="true"
+            android:exported="true">
 
-        </activity>
+            <intent-filter>
+                <action android:name="tebiediao.FloatWindowService" />
+            </intent-filter>
 
-        <activity android:name=".VideoActivity">
-        </activity>
+        </service>
     </application>
 
 </manifest>

@@ -92,4 +92,8 @@ public class AlgorithmUtils {
     }
 
 
+    public static int getfeiI(int i) {
+        return ~i;
+    }
+
 }

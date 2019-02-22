@@ -8,9 +8,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +25,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -120,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             return 7782;
         }
     };
+    private Button testmanifest;
+    private Button testcontract;
+    private Button maptojson;
+    private ImageView iv;
+    private Button startmain3;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -172,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         singleinstance = (Button) findViewById(R.id.singleinstance);
         singleInstance = (Button) findViewById(R.id.singleInstance);
         video = (Button) findViewById(R.id.video);
+        testmanifest = (Button) findViewById(R.id.testmanifest);
+        testcontract = (Button) findViewById(R.id.testcontract);
+        maptojson = (Button) findViewById(R.id.testmap2json);
+        iv = (ImageView) findViewById(R.id.iv_asdf);
+        startmain3 = (Button) findViewById(R.id.startmain3);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -579,6 +593,47 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
 
+        testmanifest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent("com.good.diaodiaode.tebiediao.TestManifestActivity");
+                startActivity(intent);
+            }
+        });
+
+        testcontract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setAction(Intent.ACTION_PICK);
+                i.setData(ContactsContract.Contacts.CONTENT_URI);
+                startActivityForResult(i, 1);
+            }
+        });
+        maptojson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HashMap<String, String> map1 = new HashMap();
+                map1.put("asdasd", "sdfsd电饭锅");
+                map1.put("asdasdasd", "sdfasdsd电饭sdogjf锅");
+                map1.put("asdaetposd", "sdfsd电sdfg饭锅");
+                map1.put("assfdgdasd", "sdfsd电饭锅");
+                map1.put("asdfghasd", "sdfsd电fghjf饭锅");
+
+
+                JSONObject jsonObject = new JSONObject(map1);
+                Log.e("textMap2Json", jsonObject.toString());
+
+
+            }
+        });
+
+        startmain3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, Main3Activity.class));
+            }
+        });
     }
 
     @Override
@@ -717,9 +772,65 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == 123) {
+
+        } else if (requestCode == 1) {
+            String name = "";
+            String phoneNumber = "";
+            switch (resultCode) {
+                case RESULT_OK:
+                    switch (requestCode) {
+                        case 1:
+                            if (data == null) {
+                                return;
+                            }
+                            Uri contactData = data.getData();
+                            if (contactData == null) {
+                                return;
+                            }
+                            Cursor cursor = managedQuery(contactData, null, null, null,
+                                    null);
+                            if (cursor.moveToFirst()) {
+                                name = cursor
+                                        .getString(cursor
+                                                .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                                String hasPhone = cursor
+                                        .getString(cursor
+                                                .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER));
+                                String id = cursor.getString(cursor
+                                        .getColumnIndex(ContactsContract.Contacts._ID));
+                                if (hasPhone.equalsIgnoreCase("1")) {
+                                    hasPhone = "true";
+                                } else {
+                                    hasPhone = "false";
+                                }
+                                if (Boolean.parseBoolean(hasPhone)) {
+                                    Cursor phones = getContentResolver()
+                                            .query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                                    null,
+                                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                                            + " = " + id, null, null);
+                                    while (phones.moveToNext()) {
+                                        phoneNumber = phones
+                                                .getString(phones
+                                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                    }
+                                    phones.close();
+                                }
+
+                                cursor.close();
+                            }
+                            Log.i("info", "联系人：" + name + "--"
+                                    + (phoneNumber));
+
+                            break;
+                    }
+                    break;
+            }
+
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private String getSystemPhotoPath() {

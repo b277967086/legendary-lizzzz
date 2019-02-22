@@ -127,6 +127,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="video" />
+
+            <Button
+                android:id="@+id/testmanifest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="testmanifest" />
+
+            <Button
+                android:id="@+id/testcontract"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系人" />
+            <Button
+                android:id="@+id/testmap2json"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="map2json" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/startmain3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="启动Main3" />
+
         </LinearLayout>
 
         <EditText
@@ -147,4 +177,11 @@
             ></com.good.diaodiaode.tebiediao.WaterDropView>
     </LinearLayout>
 
+
+    <ImageView
+        android:id="@+id/iv_asdf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_test"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
