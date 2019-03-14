@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 
@@ -150,9 +151,24 @@ public class FloatWindowService extends Service {
 
     private void setActivityController() {
         try {
+            //1
             Class<?> aClass = Class.forName("android.app.ActivityManager");
             Method method = aClass.getMethod("getService");
             Object obj = method.invoke(null);
+
+
+            //2同1
+            Class activityManagerclass = Class.forName("android.app.ActivityManager");
+            Field iActivityManagerSingleton = activityManagerclass.getDeclaredField("IActivityManagerSingleton");
+            iActivityManagerSingleton.setAccessible(true);
+            Object SingletonObj = iActivityManagerSingleton.get(null);
+            Class<?> singtonClass = Class.forName("android.util.Singleton");
+            Field iActivityManagerF = singtonClass.getDeclaredField("mInstance");
+            iActivityManagerF.setAccessible(true);
+            Object iActivityManagerObj = iActivityManagerF.get(SingletonObj);
+
+            Log.e("object_equal", String.valueOf(obj == iActivityManagerObj));
+
             Method[] methods = obj.getClass().getDeclaredMethods();
 
             Log.e("name", obj.getClass().getSimpleName());
