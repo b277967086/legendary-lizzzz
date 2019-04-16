@@ -157,6 +157,11 @@
                 android:layout_height="wrap_content"
                 android:text="启动Main3" />
 
+            <Button
+                android:id="@+id/startsms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="启动SMSActivity" />
         </LinearLayout>
 
         <EditText

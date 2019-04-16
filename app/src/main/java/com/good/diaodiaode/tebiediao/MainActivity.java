@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -57,6 +58,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -129,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private Button maptojson;
     private ImageView iv;
     private Button startmain3;
+    private Button startsms;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -186,6 +189,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         maptojson = (Button) findViewById(R.id.testmap2json);
         iv = (ImageView) findViewById(R.id.iv_asdf);
         startmain3 = (Button) findViewById(R.id.startmain3);
+        startsms = (Button) findViewById(R.id.startsms);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -634,6 +638,32 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 startActivity(new Intent(MainActivity.this, Main3Activity.class));
             }
         });
+
+        startsms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SMSActivity.class));
+            }
+        });
+
+
+        Log.d("test_isSameDay",""+ SystemClock.elapsedRealtime());
+        Log.d("test_isSameDay",""+System.currentTimeMillis());
+        Log.d("test_isSameDay",""+isSameDay(1554998399,System.currentTimeMillis()));
+    }
+
+    public static boolean isSameDay(long startTime, long endTime) {
+        if (String.valueOf(startTime).length() == 10) {
+            startTime = startTime * 1000L;
+        }
+        if (String.valueOf(endTime).length() == 10) {
+            endTime = endTime * 1000L;
+        }
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTimeInMillis(startTime);
+        Calendar endCalendar = Calendar.getInstance();
+        endCalendar.setTimeInMillis(endTime);
+        return startCalendar.get(Calendar.DAY_OF_MONTH) == endCalendar.get(Calendar.DAY_OF_MONTH);
     }
 
     @Override
