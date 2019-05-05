@@ -159,7 +159,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+//        SDCardUtils.readSDCard();
+//        SDCardUtils.readSystem(this);
+//        SDCardUtils.readPathRoot();
+        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 444);
         ContentViewUtils.init(this);
 //        setContentView(R.layout.activity_main);
 //        NumberUtils.getBAt(4);
@@ -683,6 +686,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 } else if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(MainActivity.this, "开通权限,开工", Toast.LENGTH_SHORT).show();
                 }
+            }
+        }else if(requestCode == 444){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                boolean ahendiao = SDCardUtils.saveFileToSDCardCustomDir(new byte[]{1, 2, 3}, "ahendiao", "lee123.txt");
+                Toast.makeText(MainActivity.this,""+ahendiao , Toast.LENGTH_SHORT).show();
             }
         }
 

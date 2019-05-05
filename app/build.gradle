@@ -1,21 +1,22 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
+//apply from:"../andResGuard.gradle"
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId "com.good.diaodiaode.tebiediao"
-        minSdkVersion 14
+        minSdkVersion 18
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
 
     signingConfigs {
-        debug {
-            storeFile file("../debug.keystore")
-        }
+//        debug {
+//            storeFile file("../debug.keystore")
+//        }
         release {
             storeFile file("../signfile.jks")
             keyAlias 'sign'
