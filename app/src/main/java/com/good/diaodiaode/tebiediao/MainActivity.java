@@ -1,6 +1,7 @@
 package com.good.diaodiaode.tebiediao;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
@@ -17,6 +19,7 @@ import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -49,6 +52,7 @@ import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
 import com.j256.ormlite.dao.Dao;
+import com.yanzhenjie.album.Album;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,6 +136,9 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private ImageView iv;
     private Button startmain3;
     private Button startsms;
+    private Button startpicpick;
+    private static final int ACTIVITY_REQUEST_SELECT_PHOTO = 332;
+    private int PERMISSION_WRITE_SDCARD  =484;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -193,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         iv = (ImageView) findViewById(R.id.iv_asdf);
         startmain3 = (Button) findViewById(R.id.startmain3);
         startsms = (Button) findViewById(R.id.startsms);
+        startpicpick = (Button) findViewById(R.id.startpicpick);
 //        addSpringView(rl);
         addSpringView(btShowToast);
         addSpringView(btshowclose);
@@ -649,12 +657,42 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
 
+        startpicpick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!checkPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, PERMISSION_WRITE_SDCARD);
+                    return;
+                }
+                Album.startAlbum(MainActivity.this, ACTIVITY_REQUEST_SELECT_PHOTO
+                        , 9
+                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)
+                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
+            }
+        });
+
 
         Log.d("test_isSameDay",""+ SystemClock.elapsedRealtime());
         Log.d("test_isSameDay",""+System.currentTimeMillis());
         Log.d("test_isSameDay",""+isSameDay(1554998399,System.currentTimeMillis()));
     }
+    public static boolean checkPermission(Context context, String permission) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            return true;
+        }
+        if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        }
+        return false;
+    }
 
+
+    public static void requestPermission(Activity activity, String permission, int requestCode) {
+        if (checkPermission(activity, permission)) {
+            return;
+        }
+        ActivityCompat.requestPermissions(activity, new String[]{permission}, requestCode);
+    }
     public static boolean isSameDay(long startTime, long endTime) {
         if (String.valueOf(startTime).length() == 10) {
             startTime = startTime * 1000L;
@@ -692,6 +730,11 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 boolean ahendiao = SDCardUtils.saveFileToSDCardCustomDir(new byte[]{1, 2, 3}, "ahendiao", "lee123.txt");
                 Toast.makeText(MainActivity.this,""+ahendiao , Toast.LENGTH_SHORT).show();
             }
+        }else if(requestCode == PERMISSION_WRITE_SDCARD){
+            Album.startAlbum(MainActivity.this, ACTIVITY_REQUEST_SELECT_PHOTO
+                    , 9
+                    , ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)
+                    , ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
         }
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -867,6 +910,14 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                     break;
             }
 
+        }else if (requestCode == ACTIVITY_REQUEST_SELECT_PHOTO) {
+            if (resultCode == RESULT_OK) { // 判断是否成功。
+                // 拿到用户选择的图片路径List：
+                List<String> pathList = Album.parseResult(data);
+                Log.e("onActivityResult",pathList.toString());
+            } else if (resultCode == RESULT_CANCELED) { // 用户取消选择。
+                // 根据需要提示用户取消了选择。
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
