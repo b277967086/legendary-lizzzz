@@ -1,7 +1,10 @@
 package com.good.diaodiaode.tebiediao.hook;
 
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.good.diaodiaode.tebiediao.activity.PluginStubActivity;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,10 +22,16 @@ public class StartActivityHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (method.getName().contains("startActivity")) {
-            Log.e("StartActivityHandler", "hook");
-            Log.e("StartActivityHandler", iActivityManagerObj.getClass().getCanonicalName());
+        if (method.getName().equals("startActivity")) {
+            Log.e("xxxxxx", "hook_startActivity");
+            for (int index = 0; index < args.length; index++) {
+                if (args[index] instanceof Intent) {
+                    Intent intent = new Intent();
+                    intent.setClassName("com.good.diaodiaode.tebiediao.activity","PluginStubActivity");
+                    args[index] = intent;
+                }
+            }
         }
-        return method.invoke(iActivityManagerObj, args);
+        return method.invoke(iActivityManagerObj,args);
     }
 }
