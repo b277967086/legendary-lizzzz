@@ -1,2 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.jifen.qukan.plugin" />
+    package="com.jifen.qukan.plugin" >
+
+
+    <application
+        android:name=".PluginApplacation"
+        android:allowBackup="true"
+        android:supportsRtl="true">
+
+        <activity
+            android:name="activity.PluginActivity" />
+    </application>
+
+</manifest>
