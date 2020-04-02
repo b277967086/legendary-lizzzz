@@ -11,7 +11,7 @@
         android:layout_height="120dp"
         android:gravity="center">
 
-        <com.good.diaodiaode.tebiediao.RotateCirCleView
+        <com.good.diaodiaode.tebiediao.widget.RotateCirCleView
             android:id="@+id/rotateCirCleView"
             android:layout_width="80dp"
             android:layout_height="80dp"

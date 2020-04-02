@@ -1,5 +1,0 @@
-<root>
-    <item name='android.support.v4.graphics.drawable.RoundedBitmapDrawable'>
-        <annotation name='java.lang.Deprecated' />
-    </item>
-</root>

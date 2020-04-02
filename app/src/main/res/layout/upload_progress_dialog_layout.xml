@@ -14,7 +14,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
 
-        <com.good.diaodiaode.tebiediao.UpLoadProgressView
+        <com.good.diaodiaode.tebiediao.widget.UpLoadProgressView
             android:id="@+id/rotateCirCleView"
             android:layout_width="45dp"
             android:layout_height="45dp"

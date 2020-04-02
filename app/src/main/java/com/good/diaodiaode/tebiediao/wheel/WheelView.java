@@ -31,10 +31,10 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.good.diaodiaode.tebiediao.DefaultConfig;
-import com.good.diaodiaode.tebiediao.PickerConfig;
+import com.good.diaodiaode.tebiediao.config.DefaultConfig;
+import com.good.diaodiaode.tebiediao.config.PickerConfig;
 import com.good.diaodiaode.tebiediao.R;
-import com.good.diaodiaode.tebiediao.WheelViewAdapter;
+import com.good.diaodiaode.tebiediao.adapter.WheelViewAdapter;
 
 import java.util.LinkedList;
 import java.util.List;

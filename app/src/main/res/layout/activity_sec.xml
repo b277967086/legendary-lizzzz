@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:id="@+id/rl"
     android:background="@color/colorPrimary"
-    tools:context="com.good.diaodiaode.tebiediao.MainActivity">
+    tools:context="com.good.diaodiaode.tebiediao.activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/ll"

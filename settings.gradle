@@ -1,1 +1,2 @@
 include ':app', ':javapotcompiler'
+include ':plugin'

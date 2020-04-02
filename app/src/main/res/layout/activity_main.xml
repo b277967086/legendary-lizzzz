@@ -168,6 +168,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="启动多选图片" />
+
+            <Button
+                android:id="@+id/deeplink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="deeplink" />
         </LinearLayout>
 
         <EditText
@@ -175,17 +181,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!--<com.good.diaodiaode.tebiediao.SecondOrderBezier-->
+        <!--<com.good.diaodiaode.tebiediao.config.SecondOrderBezier-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="600dp">-->
 
-        <!--</com.good.diaodiaode.tebiediao.SecondOrderBezier>-->
+        <!--</com.good.diaodiaode.tebiediao.config.SecondOrderBezier>-->
 
-        <com.good.diaodiaode.tebiediao.WaterDropView
+        <com.good.diaodiaode.tebiediao.widget.WaterDropView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            ></com.good.diaodiaode.tebiediao.WaterDropView>
+            ></com.good.diaodiaode.tebiediao.widget.WaterDropView>
     </LinearLayout>
 
 

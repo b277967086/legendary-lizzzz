@@ -19,6 +19,7 @@ buildscript {
 allprojects {
     repositories {
         maven {  url "http://maven.ipo.com/nexus/content/groups/public/"  }
+        maven { url 'http://nexus.qutoutiao.net/repository/android/' }
         jcenter()
     }
 }
