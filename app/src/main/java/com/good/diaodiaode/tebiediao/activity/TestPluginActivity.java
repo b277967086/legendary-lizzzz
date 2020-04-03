@@ -19,7 +19,7 @@ public class TestPluginActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setComponent(new ComponentName("com.jifen.qukan.plugin.activity", "com.jifen.qukan.plugin.activity.PluginActivity"));
+                intent.setComponent(new ComponentName("com.good.diaodiaode.plugin.activity", "com.good.diaodiaode.plugin.activity.PluginActivity"));
                 startActivity(intent);
             }
         });

@@ -1,4 +1,4 @@
-package com.jifen.qukan.plugin.activity;
+package com.good.diaodiaode.plugin.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

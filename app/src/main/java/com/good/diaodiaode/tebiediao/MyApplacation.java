@@ -16,5 +16,6 @@ public class MyApplacation extends Application {
 //        InitConfig config=new InitConfig.Builder().setImgAdapter(new ImageAdapter()).build();
 //        WXSDKEngine.initialize(this,config);
         HookUtils.init(this);
+        HookUtils.hook(this);
     }
 }

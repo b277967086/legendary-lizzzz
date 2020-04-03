@@ -3,12 +3,9 @@
 
 
     <application
-        android:name=".PluginApplacation"
+        android:name="com.good.diaodiaode.plugin.activity.PluginApplacation"
         android:allowBackup="true"
         android:supportsRtl="true">
-
-        <activity
-            android:name="activity.PluginActivity" />
     </application>
 
 </manifest>
