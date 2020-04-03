@@ -1,5 +1,6 @@
 package com.good.diaodiaode.tebiediao.hook;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
@@ -14,24 +15,26 @@ import java.lang.reflect.Method;
  * hook住，并用动态代理替换activtyService
  */
 public class StartActivityHandler implements InvocationHandler {
-    private Object iActivityManagerObj;
+    private Context cotext;
+    private Object mIActivityManager;
 
-    public StartActivityHandler(Object iActivityManagerObj) {
-        this.iActivityManagerObj = iActivityManagerObj;
+
+    public StartActivityHandler(Context context, Object mIActivityManager) {
+        this.mIActivityManager = mIActivityManager;
+        this.cotext = context;
     }
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (method.getName().equals("startActivity")) {
-            Log.e("xxxxxx", "hook_startActivity");
             for (int index = 0; index < args.length; index++) {
                 if (args[index] instanceof Intent) {
                     Intent intent = new Intent();
-                    intent.setClassName("com.good.diaodiaode.tebiediao.activity","PluginStubActivity");
+                    intent.setClass(cotext, PluginStubActivity.class);
                     args[index] = intent;
                 }
             }
         }
-        return method.invoke(iActivityManagerObj,args);
+        return method.invoke(mIActivityManager, args);
     }
 }

@@ -1,14 +1,14 @@
 package com.good.diaodiaode.tebiediao.activity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.good.diaodiaode.tebiediao.R;
 
-public class TestPluginActivity extends AppCompatActivity {
+public class TestPluginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +19,7 @@ public class TestPluginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClassName("com.jifen.qukan.plugin.activity", "PluginActivity");
+                intent.setComponent(new ComponentName("com.jifen.qukan.plugin.activity", "com.jifen.qukan.plugin.activity.PluginActivity"));
                 startActivity(intent);
             }
         });
