@@ -56,17 +56,17 @@ import com.good.diaodiaode.tebiediao.model.Student;
 import com.good.diaodiaode.tebiediao.dialog.UploadProgressBarDialog;
 import com.good.diaodiaode.tebiediao.db.DatabaseHelper;
 import com.good.diaodiaode.tebiediao.db.User;
-import com.iflytek.cloud.ErrorCode;
-import com.iflytek.cloud.InitListener;
-import com.iflytek.cloud.RecognizerListener;
-import com.iflytek.cloud.RecognizerResult;
-import com.iflytek.cloud.SpeechConstant;
-import com.iflytek.cloud.SpeechError;
-import com.iflytek.cloud.SpeechRecognizer;
-import com.iflytek.cloud.SpeechUtility;
-import com.iflytek.cloud.ui.RecognizerDialog;
-import com.iflytek.cloud.ui.RecognizerDialogListener;
-import com.j256.ormlite.dao.Dao;
+//import com.iflytek.cloud.ErrorCode;
+//import com.iflytek.cloud.InitListener;
+//import com.iflytek.cloud.RecognizerListener;
+//import com.iflytek.cloud.RecognizerResult;
+//import com.iflytek.cloud.SpeechConstant;
+//import com.iflytek.cloud.SpeechError;
+//import com.iflytek.cloud.SpeechRecognizer;
+//import com.iflytek.cloud.SpeechUtility;
+//import com.iflytek.cloud.ui.RecognizerDialog;
+//import com.iflytek.cloud.ui.RecognizerDialogListener;
+//import com.j256.ormlite.dao.Dao;
 import com.yanzhenjie.album.Album;
 
 import org.json.JSONException;
@@ -168,16 +168,16 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     /**
      * 初始化监听器。
      */
-    private InitListener mInitListener = new InitListener() {
-
-        @Override
-        public void onInit(int code) {
-            Log.d("TAG", "SpeechRecognizer init() code = " + code);
-            if (code != ErrorCode.SUCCESS) {
-                Toast.makeText(MainActivity.this, "初始化失败，错误码：" + code, Toast.LENGTH_SHORT).show();
-            }
-        }
-    };
+//    private InitListener mInitListener = new InitListener() {
+//
+//        @Override
+//        public void onInit(int code) {
+//            Log.d("TAG", "SpeechRecognizer init() code = " + code);
+//            if (code != ErrorCode.SUCCESS) {
+//                Toast.makeText(MainActivity.this, "初始化失败，错误码：" + code, Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
 //        setContentView(R.layout.activity_main);
 //        NumberUtils.getBAt(4);
 //        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
-        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
+//        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
 
         bt = (Button) findViewById(R.id.bt_takepic);
 //        addSpringView(bt);
@@ -490,92 +490,92 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         });
 
 
-        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
-        SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(getApplicationContext(), mInitListener);
-        //2.设置听写参数，详见《科大讯飞MSC API手册(Android)》SpeechConstant类
-        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
-        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
-        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
-
-        //听写监听器
-        RecognizerListener mRecoListener = new RecognizerListener() {
-            //听写结果回调接口(返回Json格式结果，用户可参见附录12.1)；
-            //一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
-            // 关于解析Json的代码可参见MscDemo中JsonParser类；
-            //isLast等于true时会话结束。
-            public void onResult(RecognizerResult results, boolean isLast) {
-                Log.d("Result:", results.getResultString());
-            }
-
-            //会话发生错误回调接口
-            public void onError(SpeechError error) {
-                error.getPlainDescription(true); //获取错误码描述}
-                //开始录音
-            }
-
-            //音量值0~30
-            @Override
-            public void onVolumeChanged(int i, byte[] bytes) {
-
-            }
-
-            public void onBeginOfSpeech() {
-            }
-
-            //结束录音
-            public void onEndOfSpeech() {
-            }
-
-            //扩展用接口
-            public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
-            }
-        };
-
-        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
-        final RecognizerDialog iatDialog = new RecognizerDialog(this, mInitListener);
-//2.设置听写参数，同上节
-//3.设置回调接口
-        iatDialog.setListener(new RecognizerDialogListener() {
-            @Override
-            public void onResult(RecognizerResult recognizerResult, boolean b) {
-                printResult(recognizerResult);
-                if (b) {
-                } else {
-
-                }
-            }
-
-            @Override
-            public void onError(SpeechError speechError) {
-
-            }
-        });
-
-        //4.开始听写
-        mIat.startListening(mRecoListener);
-
-        kedaxunfei.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //3.开始听写
-//                mIat.startListening(mRecoListener);
-                iatDialog.show();
-            }
-        });
-
-        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-        Dao<User, Integer> userDao;
-        try {
-            userDao = databaseHelper.getUserDao();
-            userDao.createOrUpdate(new User("xiao1", "asdasdas"));
-            userDao.createIfNotExists(new User("xiao2", "asdasdas"));
-            userDao.createIfNotExists(new User("xiao3", "asdasdas"));
-//            User user = userDao.queryForId(3);
-            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
-            Log.v("ormlite", users.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+//        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+//        SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(getApplicationContext(), mInitListener);
+//        //2.设置听写参数，详见《科大讯飞MSC API手册(Android)》SpeechConstant类
+//        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
+//        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+//        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
+//
+//        //听写监听器
+//        RecognizerListener mRecoListener = new RecognizerListener() {
+//            //听写结果回调接口(返回Json格式结果，用户可参见附录12.1)；
+//            //一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
+//            // 关于解析Json的代码可参见MscDemo中JsonParser类；
+//            //isLast等于true时会话结束。
+//            public void onResult(RecognizerResult results, boolean isLast) {
+//                Log.d("Result:", results.getResultString());
+//            }
+//
+//            //会话发生错误回调接口
+//            public void onError(SpeechError error) {
+//                error.getPlainDescription(true); //获取错误码描述}
+//                //开始录音
+//            }
+//
+//            //音量值0~30
+//            @Override
+//            public void onVolumeChanged(int i, byte[] bytes) {
+//
+//            }
+//
+//            public void onBeginOfSpeech() {
+//            }
+//
+//            //结束录音
+//            public void onEndOfSpeech() {
+//            }
+//
+//            //扩展用接口
+//            public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+//            }
+//        };
+//
+//        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+//        final RecognizerDialog iatDialog = new RecognizerDialog(this, mInitListener);
+////2.设置听写参数，同上节
+////3.设置回调接口
+//        iatDialog.setListener(new RecognizerDialogListener() {
+//            @Override
+//            public void onResult(RecognizerResult recognizerResult, boolean b) {
+//                printResult(recognizerResult);
+//                if (b) {
+//                } else {
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onError(SpeechError speechError) {
+//
+//            }
+//        });
+//
+//        //4.开始听写
+//        mIat.startListening(mRecoListener);
+//
+//        kedaxunfei.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //3.开始听写
+////                mIat.startListening(mRecoListener);
+//                iatDialog.show();
+//            }
+//        });
+//
+//        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+//        Dao<User, Integer> userDao;
+//        try {
+//            userDao = databaseHelper.getUserDao();
+//            userDao.createOrUpdate(new User("xiao1", "asdasdas"));
+//            userDao.createIfNotExists(new User("xiao2", "asdasdas"));
+//            userDao.createIfNotExists(new User("xiao3", "asdasdas"));
+////            User user = userDao.queryForId(3);
+//            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
+//            Log.v("ormlite", users.toString());
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
 
 
         ormlite.setOnClickListener(new View.OnClickListener() {
@@ -803,28 +803,28 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     // 用HashMap存储听写结果
     private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
 
-    private void printResult(RecognizerResult results) {
-        String text = JsonParser.parseIatResult(results.getResultString());
-
-        String sn = null;
-        // 读取json结果中的sn字段
-        try {
-            JSONObject resultJson = new JSONObject(results.getResultString());
-            sn = resultJson.optString("sn");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        mIatResults.put(sn, text);
-
-        StringBuffer resultBuffer = new StringBuffer();
-        for (String key : mIatResults.keySet()) {
-            resultBuffer.append(mIatResults.get(key));
-        }
-
-        mResultText.setText(resultBuffer.toString());
-        mResultText.setSelection(mResultText.length());
-    }
+//    private void printResult(RecognizerResult results) {
+//        String text = JsonParser.parseIatResult(results.getResultString());
+//
+//        String sn = null;
+//        // 读取json结果中的sn字段
+//        try {
+//            JSONObject resultJson = new JSONObject(results.getResultString());
+//            sn = resultJson.optString("sn");
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        mIatResults.put(sn, text);
+//
+//        StringBuffer resultBuffer = new StringBuffer();
+//        for (String key : mIatResults.keySet()) {
+//            resultBuffer.append(mIatResults.get(key));
+//        }
+//
+//        mResultText.setText(resultBuffer.toString());
+//        mResultText.setSelection(mResultText.length());
+//    }
 
     class ThreadB implements Runnable {
         @Override
