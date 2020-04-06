@@ -17,7 +17,7 @@ import java.lang.reflect.Method;
 public class StartActivityHandler implements InvocationHandler {
     private Context cotext;
     private Object mIActivityManager;
-
+    public static Intent orginIntent;
 
     public StartActivityHandler(Context context, Object mIActivityManager) {
         this.mIActivityManager = mIActivityManager;
@@ -26,9 +26,10 @@ public class StartActivityHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if (method.getName().equals("startActivity")) {
+        if (method.getName().equals("startActivity") && args != null && args.length > 0) {
             for (int index = 0; index < args.length; index++) {
                 if (args[index] instanceof Intent) {
+                    orginIntent = (Intent) args[index];
                     Intent intent = new Intent();
                     intent.setClass(cotext, PluginStubActivity.class);
                     args[index] = intent;
