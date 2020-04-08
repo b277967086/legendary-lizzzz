@@ -1,12 +1,16 @@
 package com.good.diaodiaode.tebiediao.hook;
 
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.system.Os;
 import android.util.Log;
+
+import com.good.diaodiaode.tebiediao.activity.PluginStubActivity;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -155,11 +159,11 @@ public class HookUtils {
             Field acField = clz.getDeclaredField("sCurrentActivityThread");
             acField.setAccessible(true);
             Object acObj = acField.get(null);
-
+            Log.e("xxxxx", "acObj:"+acObj.toString());
             Field mHField = clz.getDeclaredField("mH");
             mHField.setAccessible(true);
             Object mH = mHField.get(acObj);
-
+            Log.e("xxxxx", "mH:"+mH.toString());
             Field mCallback = Handler.class.getDeclaredField("mCallback");
             mCallback.setAccessible(true);
 
@@ -172,22 +176,29 @@ public class HookUtils {
 
                     }else if (msg.what == 159) {
                         //api28是ClientTransation
-
+                        Log.e("xxxxx", "159");
                         try {
                             Class<?> clz = Class.forName("android.app.servertransaction.ClientTransaction");
                             Field mActivityCallbacksField = clz.getDeclaredField("mActivityCallbacks");
                             mActivityCallbacksField.setAccessible(true);
                             List mActivityCallbacks = (List) mActivityCallbacksField.get(msg.obj);
 
+                            Log.e("xxxxx", "mActivityCallbacks:" + mActivityCallbacks.toString());
                             for (Object o : mActivityCallbacks) {
                                 if ("android.app.servertransaction.LaunchActivityItem".equals(o.getClass().getName())) {
+                                    Log.e("xxxxx", "LaunchActivityItem1");
                                     Field mIntentField = o.getClass().getDeclaredField("mIntent");
                                     mIntentField.setAccessible(true);
-                                    mIntentField.set(o, StartActivityHandler.orginIntent);
-                                    StartActivityHandler.orginIntent = null;
+                                    Intent proxyIntent = (Intent) mIntentField.get(o);
+                                    if (PluginStubActivity.class.getName().equals(proxyIntent.getComponent().getClassName()) && StartActivityHandler.orginIntent != null) {
+                                        mIntentField.set(o, StartActivityHandler.orginIntent);
+                                        StartActivityHandler.orginIntent = null;
+                                        Log.e("xxxxx", "LaunchActivityItem2");
+                                    }
                                 }
                             }
                         } catch (Exception e) {
+                            Log.e("xxxxx", "exception2");
                         }
                     }
                     return false;
@@ -199,6 +210,7 @@ public class HookUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Log.e("xxxxx", "exception2");
         }
     }
 }
