@@ -5,7 +5,9 @@
     <application
         android:name="com.good.diaodiaode.plugin.activity.PluginApplacation"
         android:allowBackup="true"
-        android:supportsRtl="true">
-    </application>
+        android:icon="@null"
+        android:label="插件"
+        android:supportsRtl="true"
+        android:theme="@null"></application>
 
 </manifest>

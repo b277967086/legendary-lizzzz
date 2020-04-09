@@ -81,7 +81,7 @@ public class FloatWindowService extends Service {
         final WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         final ImageView imageView = new ImageView(this);
-        imageView.setImageResource(R.mipmap.ic_launcher);
+//        imageView.setImageResource(R.mipmap.ic_launcher);
         floatingBallLayoutParams.height = 200;
         floatingBallLayoutParams.width = 200;
         floatingBallLayoutParams.x = 300;
