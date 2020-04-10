@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 
-import com.jifen.qukan.plugin.R;
+import com.good.diaodiaode.plugin.R;
 
 public class PluginActivity extends BaseActivity {
     @Override

@@ -1,4 +1,11 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.didi.virtualapk.plugin'
+
+virtualApk {
+    packageId = 0x6f //插件资源ID的PP字段
+    targetHost = '../VirtualApk/app' // 宿主的目录
+    applyHostMapping = true
+}
 
 android {
     compileSdkVersion 28
@@ -22,5 +29,5 @@ android {
 }
 
 dependencies {
-//    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.didi.virtualapk:core:0.9.6'
 }

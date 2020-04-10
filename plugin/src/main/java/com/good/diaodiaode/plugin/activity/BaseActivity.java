@@ -56,8 +56,8 @@ public class BaseActivity extends Activity {
                 Object apkAssetsPlugin = loadApkAssets.invoke(sResourcesManager, "/sdcard/plugin-debug.apk", false, false);
                 Object apkAssetsHost = loadApkAssets.invoke(sResourcesManager, getApplicationContext().getPackageResourcePath(), true, false);
 //                Object apkAssets = ReflectionHelper.invoke(resourcesManagerClass, sResourcesManager, "loadApkAssets", "/sdcard/plugin-debug.apk", false, false);
-                addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssetsPlugin);
                 addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssetsHost);
+                addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssetsPlugin);
 
                 Log.e("getResources", "addApkAssetsMethod:" + addApkAssetsMethod.toString());
                 Method build = assetManagerBuilderClass.getDeclaredMethod("build");

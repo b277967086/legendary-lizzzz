@@ -19,12 +19,12 @@ public class PluginApplacation extends Application {
             try {
                 Class<?> assetManagerBuilderClass = Class.forName("android.content.res.AssetManager$Builder");
                 Object assetManagerBuilderObj = assetManagerBuilderClass.newInstance();
-                Log.e("getResources", "assetManagerBuilderObj:"+assetManagerBuilderObj.toString());
+                Log.e("getResources", "assetManagerBuilderObj:" + assetManagerBuilderObj.toString());
 
                 Class<?> apkAssetsClass = Class.forName("android.content.res.ApkAssets");
                 Method addApkAssetsMethod = assetManagerBuilderClass.getDeclaredMethod("addApkAssets", apkAssetsClass);
                 addApkAssetsMethod.setAccessible(true);
-                Log.e("getResources", "addApkAssetsMethod:"+addApkAssetsMethod.toString());
+                Log.e("getResources", "addApkAssetsMethod:" + addApkAssetsMethod.toString());
 
 //                Method loadFromPathMethod = apkAssetsClass.getDeclaredMethod("loadFromPath", String.class);
 //                loadFromPathMethod.setAccessible(true);
@@ -34,17 +34,21 @@ public class PluginApplacation extends Application {
 
                 Class<?> resourcesManagerClass = Class.forName("android.app.ResourcesManager");
                 Object sResourcesManager = ReflectionHelper.getStaticValue(resourcesManagerClass, "sResourcesManager");
-                Log.e("getResources", "sResourcesManager:"+sResourcesManager.toString());
-                Object apkAssets = ReflectionHelper.invoke(resourcesManagerClass, sResourcesManager, "loadApkAssets", String.class, Boolean.class, Boolean.class);
-                addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssets);
+                Log.e("getResources", "sResourcesManager:" + sResourcesManager.toString());
+                Method loadApkAssets = ReflectionHelper.findMethod(resourcesManagerClass, "loadApkAssets", String.class, boolean.class, boolean.class);
+                Object apkAssetsPlugin = loadApkAssets.invoke(sResourcesManager, "/sdcard/plugin-debug.apk", false, false);
+                Object apkAssetsHost = loadApkAssets.invoke(sResourcesManager, getApplicationContext().getPackageResourcePath(), true, false);
+//                Object apkAssets = ReflectionHelper.invoke(resourcesManagerClass, sResourcesManager, "loadApkAssets", "/sdcard/plugin-debug.apk", false, false);
+                addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssetsPlugin);
+                addApkAssetsMethod.invoke(assetManagerBuilderObj, apkAssetsHost);
 
-                Log.e("getResources", "addApkAssetsMethod:"+addApkAssetsMethod.toString());
+                Log.e("getResources", "addApkAssetsMethod:" + addApkAssetsMethod.toString());
                 Method build = assetManagerBuilderClass.getDeclaredMethod("build");
                 build.setAccessible(true);
                 Log.e("getResources", "getResources4");
                 //最终获取这个assetManager对象
                 AssetManager assetManager = (AssetManager) build.invoke(assetManagerBuilderObj);
-                Log.e("getResources", "assetManager:"+assetManager.toString());
+                Log.e("getResources", "assetManager:" + assetManager.toString());
                 resources = new Resources(assetManager, resources1.getDisplayMetrics(), resources1.getConfiguration());
                 Log.e("getResources", "resources:" + resources.toString());
                 return resources;
