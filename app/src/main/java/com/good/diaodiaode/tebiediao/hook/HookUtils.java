@@ -99,49 +99,49 @@ public class HookUtils {
         //思路：把这个ActivityManager.getService()动态代理
         try {
 
-//            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-//
-//                Class<?> mActivityManagerClass = Class.forName("android.app.ActivityTaskManager");
-//
-//                Field iActivityManagerTaskSingleton = mActivityManagerClass.getDeclaredField("IActivityTaskManagerSingleton");
-//
-//                iActivityManagerTaskSingleton.setAccessible(true);
-//                Object oActivityManagerSingleton = iActivityManagerTaskSingleton.get(null);
-//
-//                Class<?> aClass = Class.forName("android.util.Singleton");
-//
-//                Field mInstance = aClass.getDeclaredField("mInstance");
-//                mInstance.setAccessible(true);
-//
-//                Object mIActivityManager = mInstance.get(oActivityManagerSingleton);
-//
-//                Object proxyObj = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{Class.forName("android.app.IActivityTaskManager")}, new StartActivityHandler(context,mIActivityManager));
-//
-//                //替换代理对象
-//                mInstance.set(oActivityManagerSingleton,proxyObj);
-//
-//                Log.e("xxxxx", "success1");
-//            }else {
-            Class<?> mActivityManagerClass = Class.forName("android.app.ActivityManager");
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
-            Field iActivityManagerSingleton = mActivityManagerClass.getDeclaredField("IActivityManagerSingleton");
+                Class<?> mActivityManagerClass = Class.forName("android.app.ActivityTaskManager");
 
-            iActivityManagerSingleton.setAccessible(true);
-            Object oActivityManagerSingleton = iActivityManagerSingleton.get(null);
+                Field iActivityManagerTaskSingleton = mActivityManagerClass.getDeclaredField("IActivityTaskManagerSingleton");
 
-            Class<?> aClass = Class.forName("android.util.Singleton");
+                iActivityManagerTaskSingleton.setAccessible(true);
+                Object oActivityManagerSingleton = iActivityManagerTaskSingleton.get(null);
 
-            Field mInstance = aClass.getDeclaredField("mInstance");
-            mInstance.setAccessible(true);
+                Class<?> aClass = Class.forName("android.util.Singleton");
 
-            Object mIActivityManager = mInstance.get(oActivityManagerSingleton);
+                Field mInstance = aClass.getDeclaredField("mInstance");
+                mInstance.setAccessible(true);
 
-            Object proxyObj = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{Class.forName("android.app.IActivityManager")}, new StartActivityHandler(context, mIActivityManager));
+                Object mIActivityManager = mInstance.get(oActivityManagerSingleton);
 
-            //替换代理对象
-            mInstance.set(oActivityManagerSingleton, proxyObj);
-            Log.e("xxxxx", "success2");
-//            }
+                Object proxyObj = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{Class.forName("android.app.IActivityTaskManager")}, new StartActivityHandler(context, mIActivityManager));
+
+                //替换代理对象
+                mInstance.set(oActivityManagerSingleton, proxyObj);
+
+                Log.e("xxxxx", "success1");
+            } else {
+                Class<?> mActivityManagerClass = Class.forName("android.app.ActivityManager");
+
+                Field iActivityManagerSingleton = mActivityManagerClass.getDeclaredField("IActivityManagerSingleton");
+
+                iActivityManagerSingleton.setAccessible(true);
+                Object oActivityManagerSingleton = iActivityManagerSingleton.get(null);
+
+                Class<?> aClass = Class.forName("android.util.Singleton");
+
+                Field mInstance = aClass.getDeclaredField("mInstance");
+                mInstance.setAccessible(true);
+
+                Object mIActivityManager = mInstance.get(oActivityManagerSingleton);
+
+                Object proxyObj = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{Class.forName("android.app.IActivityManager")}, new StartActivityHandler(context, mIActivityManager));
+
+                //替换代理对象
+                mInstance.set(oActivityManagerSingleton, proxyObj);
+                Log.e("xxxxx", "success2");
+            }
 
         } catch (Exception e) {
             Log.e("xxxxx", "exception" + e.getMessage());
@@ -150,7 +150,7 @@ public class HookUtils {
 
     }
 
-    public static void hookBack(){
+    public static void hookBack() {
 
         //hook住从ams进程通讯回来的路径，将intent替换回插件的activity
         try {
@@ -159,11 +159,11 @@ public class HookUtils {
             Field acField = clz.getDeclaredField("sCurrentActivityThread");
             acField.setAccessible(true);
             Object acObj = acField.get(null);
-            Log.e("xxxxx", "acObj:"+acObj.toString());
+            Log.e("xxxxx", "acObj:" + acObj.toString());
             Field mHField = clz.getDeclaredField("mH");
             mHField.setAccessible(true);
             Object mH = mHField.get(acObj);
-            Log.e("xxxxx", "mH:"+mH.toString());
+            Log.e("xxxxx", "mH:" + mH.toString());
             Field mCallback = Handler.class.getDeclaredField("mCallback");
             mCallback.setAccessible(true);
 
@@ -172,9 +172,9 @@ public class HookUtils {
                 public boolean handleMessage(Message msg) {
 
                     //28以下是ActivityClientRecord
-                    if(msg.what == 100){
+                    if (msg.what == 100) {
 
-                    }else if (msg.what == 159) {
+                    } else if (msg.what == 159) {
                         //api28是ClientTransation
                         Log.e("xxxxx", "159");
                         try {
@@ -206,7 +206,7 @@ public class HookUtils {
             };
 
             //替换掉mH中的callback对象
-            mCallback.set(mH,callback);
+            mCallback.set(mH, callback);
 
         } catch (Exception e) {
             e.printStackTrace();
