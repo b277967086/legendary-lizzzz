@@ -11,7 +11,10 @@ import android.system.Os;
 import android.util.Log;
 
 import com.good.diaodiaode.tebiediao.activity.PluginStubActivity;
+import com.good.diaodiaode.tebiediao.utils.ReflectionHelper;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Proxy;
@@ -52,29 +55,36 @@ public class HookUtils {
 
         //宿主的ClassLoader
         ClassLoader pathClassLoader = context.getClassLoader();
-        //新创建加载插件apk的DexClassLoader
-        DexClassLoader dexClassLoader = new DexClassLoader("/sdcard/plugin-debug.apk", null, null, pathClassLoader);
 
         try {
+            File file = new File("/sdcard/plugin-debug.apk");
+            Log.e("xxxxxxxx_Absolute",file.getAbsolutePath());
+            Log.e("xxxxxxxx_canon",file.getCanonicalPath());
+            Log.e("xxxxxxxx_name",file.getName());
+            Log.e("xxxxxxxx_path",file.getPath());
+            //新创建加载插件apk的DexClassLoader
+            DexClassLoader dexClassLoader = new DexClassLoader(file.getPath(), "/sdcard", null, pathClassLoader);
+            Log.e("xxxxxxxx_init","0");
             Class<?> baseDexClassLoaderClass = Class.forName("dalvik.system.BaseDexClassLoader");
             Field pathListField = baseDexClassLoaderClass.getDeclaredField("pathList");
             pathListField.setAccessible(true);
-
+            Log.e("xxxxxxxx_init","1");
             /**
              * 获取宿主classloader的dexElements数组对象
              * */
 
             //1.获取宿主classloader的pathlist对象
             Object hostDexPathList = pathListField.get(pathClassLoader);
-
+            Log.e("xxxxxxxx_init","2");
             //2.获取dexElements数组对象
             Class<?> dexPathListClass = Class.forName("dalvik.system.DexPathList");
             Field dexElementsField = dexPathListClass.getDeclaredField("dexElements");
             dexElementsField.setAccessible(true);
             Object[] hostDexElements = (Object[]) dexElementsField.get(hostDexPathList);
-
+            Log.e("xxxxxxxx_init","3");
             //3.获取宿主classloader的pathlist对象
             Object pluginDexPathList = pathListField.get(dexClassLoader);
+            Log.e("xxxxxxxx_init","4");
             //4.获取dexElements数组对象
             Object[] pluginDexElements = (Object[]) dexElementsField.get(pluginDexPathList);
 
@@ -82,12 +92,13 @@ public class HookUtils {
 //           todo  这种写法不行，会在第6步报类转换异常
 //            Object[] newDexElements = new Object[hostDexElements.length + pluginDexElements.length];
             Object[] newDexElements = (Object[]) Array.newInstance(hostDexElements.getClass().getComponentType(), hostDexElements.length + pluginDexElements.length);
+            Log.e("xxxxxxxx_init","5");
 
             System.arraycopy(hostDexElements, 0, newDexElements, 0, hostDexElements.length);
             System.arraycopy(pluginDexElements, 0, newDexElements, hostDexElements.length, pluginDexElements.length);
             //6.将数组替换原来宿主classloader
             dexElementsField.set(hostDexPathList, newDexElements);
-            Log.e("xxxxx", "newDexElements:" + newDexElements.length);
+            Log.e("xxxxxxxx_init", "6:newDexElements:" + newDexElements.length);
         } catch (Exception e) {
             Log.e("xxxxx", "Exception:" + e.getMessage());
         }
@@ -121,7 +132,24 @@ public class HookUtils {
                 mInstance.set(oActivityManagerSingleton, proxyObj);
 
                 Log.e("xxxxx", "success1");
-            } else {
+            } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+
+
+                Object oActivityManagerSingleton = ReflectionHelper.getField(Class.forName("android.app.ActivityManagerNative"), null, "gDefault");
+
+                Class<?> aClass = Class.forName("android.util.Singleton");
+
+                Field mInstance = aClass.getDeclaredField("mInstance");
+                mInstance.setAccessible(true);
+
+                Object mIActivityManager = mInstance.get(oActivityManagerSingleton);
+
+                Object proxyObj = Proxy.newProxyInstance(context.getClassLoader(), new Class[]{Class.forName("android.app.IActivityManager")}, new StartActivityHandler(context, mIActivityManager));
+
+                //替换代理对象
+                mInstance.set(oActivityManagerSingleton, proxyObj);
+                Log.e("xxxxx", "success2");
+            }else {
                 Class<?> mActivityManagerClass = Class.forName("android.app.ActivityManager");
 
                 Field iActivityManagerSingleton = mActivityManagerClass.getDeclaredField("IActivityManagerSingleton");
@@ -171,13 +199,20 @@ public class HookUtils {
                 @Override
                 public boolean handleMessage(Message msg) {
 
-                    //28以下是ActivityClientRecord
-                    if (msg.what == 100) {
+                    try {
+                        //28以下是ActivityClientRecord
+                        if (msg.what == 100) {
+                            Intent proxyIntent = ReflectionHelper.getValue(msg.obj, "intent");
+                            if (PluginStubActivity.class.getName().equals(proxyIntent.getComponent().getClassName()) && StartActivityHandler.orginIntent != null) {
+                                ReflectionHelper.setValue(msg.obj,StartActivityHandler.orginIntent ,"intent");
+                                StartActivityHandler.orginIntent = null;
+                                Log.e("xxxxx_100", "LaunchActivity");
+                            }
+                            Log.e("xxxxx_100", "what");
+                        } else if (msg.what == 159) {
+                            //todo 兼容api28是ClientTransation
+                            Log.e("xxxxx", "159");
 
-                    } else if (msg.what == 159) {
-                        //api28是ClientTransation
-                        Log.e("xxxxx", "159");
-                        try {
                             Class<?> clz = Class.forName("android.app.servertransaction.ClientTransaction");
                             Field mActivityCallbacksField = clz.getDeclaredField("mActivityCallbacks");
                             mActivityCallbacksField.setAccessible(true);
@@ -197,9 +232,11 @@ public class HookUtils {
                                     }
                                 }
                             }
-                        } catch (Exception e) {
-                            Log.e("xxxxx", "exception2");
+
                         }
+                    } catch (Exception e) {
+                        Log.e("xxxxx", "exception2");
+                        return false;
                     }
                     return false;
                 }
