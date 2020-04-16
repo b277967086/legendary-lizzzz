@@ -30,6 +30,7 @@ public class StartActivityHandler implements InvocationHandler {
             for (int index = 0; index < args.length; index++) {
                 if (args[index] instanceof Intent) {
                     orginIntent = (Intent) args[index];
+                    Log.e("xxxx_invoke",orginIntent.toString());
                     Intent intent = new Intent();
                     intent.setClass(cotext, PluginStubActivity.class);
                     args[index] = intent;

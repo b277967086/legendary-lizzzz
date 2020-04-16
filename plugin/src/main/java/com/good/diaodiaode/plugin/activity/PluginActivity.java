@@ -13,7 +13,7 @@ public class PluginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(LayoutInflater.from(this).inflate(R.layout.activity_plugin, null));
+//        setContentView(LayoutInflater.from(this).inflate(R.layout.activity_plugin, null));
         Log.e("xxxxxx", "插件PluginActivity启动成功");
     }
 }

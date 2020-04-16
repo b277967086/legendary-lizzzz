@@ -132,7 +132,7 @@ public class HookUtils {
                 mInstance.set(oActivityManagerSingleton, proxyObj);
 
                 Log.e("xxxxx", "success1");
-            } else if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            } else if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.M){
 
 
                 Object oActivityManagerSingleton = ReflectionHelper.getField(Class.forName("android.app.ActivityManagerNative"), null, "gDefault");
@@ -211,24 +211,24 @@ public class HookUtils {
                             Log.e("xxxxx_100", "what");
                         } else if (msg.what == 159) {
                             //todo 兼容api28是ClientTransation
-                            Log.e("xxxxx", "159");
+                            Log.e("xxxxx_159", "159");
 
                             Class<?> clz = Class.forName("android.app.servertransaction.ClientTransaction");
                             Field mActivityCallbacksField = clz.getDeclaredField("mActivityCallbacks");
                             mActivityCallbacksField.setAccessible(true);
                             List mActivityCallbacks = (List) mActivityCallbacksField.get(msg.obj);
 
-                            Log.e("xxxxx", "mActivityCallbacks:" + mActivityCallbacks.toString());
+                            Log.e("xxxxx_159", "mActivityCallbacks:" + mActivityCallbacks.toString());
                             for (Object o : mActivityCallbacks) {
                                 if ("android.app.servertransaction.LaunchActivityItem".equals(o.getClass().getName())) {
-                                    Log.e("xxxxx", "LaunchActivityItem1");
+                                    Log.e("xxxxx_159", "LaunchActivityItem1");
                                     Field mIntentField = o.getClass().getDeclaredField("mIntent");
                                     mIntentField.setAccessible(true);
                                     Intent proxyIntent = (Intent) mIntentField.get(o);
                                     if (PluginStubActivity.class.getName().equals(proxyIntent.getComponent().getClassName()) && StartActivityHandler.orginIntent != null) {
                                         mIntentField.set(o, StartActivityHandler.orginIntent);
                                         StartActivityHandler.orginIntent = null;
-                                        Log.e("xxxxx", "LaunchActivityItem2");
+                                        Log.e("xxxxx_159", "LaunchActivityItem2");
                                     }
                                 }
                             }
