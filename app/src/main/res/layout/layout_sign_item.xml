@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_reward_top"
+        android:layout_width="wrap_content"
+        android:layout_height="17dp"
+        android:background="@drawable/selector_sign_coin_top"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:textSize="10dp" />
+
+    <TextView
+        android:id="@+id/tv_reward_bottom"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="@drawable/selector_sign_coin_bottom"
+        android:gravity="center"
+        android:textSize="12dp" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/circle_while_r2" />
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="2天"
+        android:textSize="10dp"
+        android:textColor="#333333" />
+
+
+</LinearLayout>

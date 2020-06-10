@@ -68,6 +68,16 @@ public class ExampleUnitTest {
 
 
     @Test
+    public void getFeiI_longestPalindrome() throws Exception {
+        assertEquals("aa", AlgorithmUtils.longestPalindrome("aacdefcaa"));
+    }
+
+    @Test
+    public void myAtoi() throws Exception {
+        assertEquals(-42, AlgorithmUtils.myAtoi("-42+44"));
+    }
+
+    @Test
     public void lianxu_text() throws Exception {
         ArrayList list = new ArrayList();
         Object o1 = new Object();
@@ -112,5 +122,15 @@ public class ExampleUnitTest {
 //        for (Object o:list) {
 //            Log.e("ExampleUnitTest_forea", o.toString());
 //        }
+    }
+
+    @Test
+    public void sqrt() {
+        assertEquals(2.0d,AlgorithmUtils.sqrt_2(45,0.00000000001),0.3);
+    }
+
+    @Test
+    public void strStr() {
+        assertEquals(3,AlgorithmUtils.strStr("abababc","ababc"));
     }
 }

@@ -19,7 +19,7 @@ public class BatteryChargeManager {
 
     private Context mContext;
     private boolean swith;
-//    private JsonObject config;
+    //    private JsonObject config;
     private BatteryReceiver mBatteryReceiver;
     private SchduleTimeTask schduleTimeTask;
     private volatile boolean isCharging;
@@ -65,7 +65,10 @@ public class BatteryChargeManager {
 
     private void startTimeTick(Context context) {
         if (schduleTimeTask == null) {
-            schduleTimeTask = new SchduleTimeTask(60 * 1000, 60 - (endTimes - startTimes) / 1000, new TimerTask() {
+            long delay = endTimes > startTimes ? 60 * 1000 - (endTimes - startTimes) : 0;
+            startTimes = 0;
+            endTimes = 0;
+            schduleTimeTask = new SchduleTimeTask(60 * 1000, delay, new TimerTask() {
                 @Override
                 public void run() {
                     // TODO: 2020/5/25 请求接口
@@ -112,18 +115,16 @@ public class BatteryChargeManager {
                 String acyion = intent.getAction();
                 switch (acyion) {
                     case Intent.ACTION_POWER_CONNECTED://接通电源
-                        isFull(intent);
                         isCharging = true;
                         startTimes = System.currentTimeMillis();
                         startTimeTick(context);
-                        Toast.makeText(context,"开始充电",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "开始充电", Toast.LENGTH_SHORT).show();
                         break;
                     case Intent.ACTION_POWER_DISCONNECTED://拔出电源
-                        isFull(intent);
                         isCharging = false;
                         endTimes = System.currentTimeMillis();
                         stopTimeTick();
-                        Toast.makeText(context,"结束充电",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "结束充电", Toast.LENGTH_SHORT).show();
                         break;
 
                     case Intent.ACTION_BATTERY_CHANGED://电量发生改变
