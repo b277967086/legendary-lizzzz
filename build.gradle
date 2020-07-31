@@ -14,6 +14,9 @@ buildscript {
 
         // androidannotation: replace with the current version of the android-apt plugin
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        // 简单起见，这里直接引用plugin模块编译生成的jar文件，不发布maven
+        classpath files('plugin/build/libs/methedcomputerplugin.jar')
     }
 }
 

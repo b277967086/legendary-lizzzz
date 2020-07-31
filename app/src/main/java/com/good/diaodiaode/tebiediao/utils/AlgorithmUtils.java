@@ -484,4 +484,89 @@ public class AlgorithmUtils {
         // 匹配失败，返回-1
         return -1;
     }
+
+    public static int divide(int dividend, int divisor) {
+
+        int newDividend  = dividend;
+
+        if(dividend == -2147483648&& divisor == -1){
+            return 2147483647;
+        }
+
+        if(dividend == 0){
+            return 0;
+        }
+        int tem_divisor = divisor;
+        int tem_res = 1;
+        int res = 0;
+        while(Math.abs(newDividend)>=Math.abs(divisor)){
+            if((newDividend > 0 && divisor > 0) ||(newDividend<0 && divisor<0)){
+                tem_res = 1;
+            }else{
+                tem_res = -1;
+            }
+
+            tem_divisor = divisor;
+            while (Math.abs(newDividend>>1) >= Math.abs(tem_divisor)) {
+                tem_res = tem_res << 1;
+                tem_divisor = tem_divisor << 1;
+            }
+
+            if((newDividend > 0 && divisor > 0) ||(newDividend<0 && divisor<0)){
+                newDividend = newDividend - tem_divisor;
+            }else{
+                newDividend = newDividend + tem_divisor;
+            }
+
+            res += tem_res;
+
+        }
+
+        return res;
+    }
+
+    public static int[] longestValidParentheses(String s) {
+
+        if(s == null ){
+            return null;
+        }
+
+        int[] dp = new int[s.length()];
+        int res  = 0;
+        for(int i = 0; i < s.length();i++){
+
+            if (')' == s.charAt(i)) {
+                if (i > 0 && '(' == s.charAt(i - 1)) {
+                    dp[i] = (i > 1 ? dp[i - 2] : 0) + 2;
+                }else if(i>0 && ')'==s.charAt(i-1)){
+                    if(i>=dp[i-1]+1&& '(' == s.charAt(i-dp[i-1]-1)){
+                        dp[i] = dp[i-1]+2+(i>=dp[i-1]+2?dp[i-dp[i-1]-2]:0);
+                    }
+                }
+                res = Math.max(res,dp[i]);
+            }
+        }
+        return dp;
+    }
+
+//    class Solution {
+//        public int maxSubArray(int[] nums) {
+//
+//            int[] dp = new int[nums.length];
+//            int res = 0;
+//            for (int i=0;i<nums.length;i++) {
+//                if (nums[i] >= 0) {
+//                    //如果遍历到是正数，不用想直接加只大不小
+//                    dp[i] = i >= 1 ? dp[i - 1] : 0 + i;
+//                }else {
+//                    //如果是负数，这个时候就得好好考虑下了，到底要不要记录dp[i]
+//                    if(dp[i-1]<0){
+//                        dp[]
+//                    }
+//                }
+//                res = Math.max(res,dp[i]);
+//            }
+//            return res;
+//        }
+//    }
 }

@@ -1,2 +1,2 @@
 include ':app', ':javapotcompiler',':plugin'
-include ':test23'
+include ':test23','methedcomputerplugin'

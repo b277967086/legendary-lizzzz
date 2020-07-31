@@ -133,4 +133,14 @@ public class ExampleUnitTest {
     public void strStr() {
         assertEquals(3,AlgorithmUtils.strStr("abababc","ababc"));
     }
+
+    @Test
+    public void divide() {
+        assertEquals(-2147483648, AlgorithmUtils.divide(-2147483648, 1));
+    }
+
+    @Test
+    public void longestValidParentheses() {
+        assertEquals(2, AlgorithmUtils.longestValidParentheses("(()())"));
+    }
 }
