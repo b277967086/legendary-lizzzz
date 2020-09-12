@@ -6,6 +6,7 @@ import com.good.diaodiaode.tebiediao.treemap.TreeMapUtils;
 import com.good.diaodiaode.tebiediao.utils.AlgorithmUtils;
 import com.good.diaodiaode.tebiediao.utils.SignUtils;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -66,15 +67,39 @@ public class ExampleUnitTest {
         assertEquals(1, AlgorithmUtils.getfeiI(9));
     }
 
-
     @Test
-    public void getFeiI_longestPalindrome() throws Exception {
-        assertEquals("aa", AlgorithmUtils.longestPalindrome("aacdefcaa"));
+    public void fourSumCount_text() throws Exception {
+        assertEquals(new String[]{"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"}, AlgorithmUtils.letterCombinations("23"));
+
     }
 
     @Test
-    public void myAtoi() throws Exception {
-        assertEquals(-42, AlgorithmUtils.myAtoi("-42+44"));
+    public void removeNthFromEnd_text() throws Exception {
+        AlgorithmUtils.ListNode head = new AlgorithmUtils.ListNode(1);
+        AlgorithmUtils.ListNode pre = head;
+        for (int i = 1; i < 5; i++) {
+            AlgorithmUtils.ListNode next = new AlgorithmUtils.ListNode(1+i);
+            pre.next = next;
+            pre = next;
+        }
+
+        assertEquals(1, AlgorithmUtils.removeNthFromEnd(head,2));
+    }
+
+    @Test
+    public void mergeTwoLists_text() throws Exception {
+        AlgorithmUtils.ListNode l1 = new AlgorithmUtils.ListNode(1);
+        AlgorithmUtils.ListNode l12 = new AlgorithmUtils.ListNode(2);
+        AlgorithmUtils.ListNode l13 = new AlgorithmUtils.ListNode(4);
+        l1.next = l12;
+        l12.next = l13;
+        AlgorithmUtils.ListNode l2 = new AlgorithmUtils.ListNode(1);
+        AlgorithmUtils.ListNode l22 = new AlgorithmUtils.ListNode(3);
+        AlgorithmUtils.ListNode l23 = new AlgorithmUtils.ListNode(4);
+        l2.next = l22;
+        l22.next = l23;
+        assertEquals(1, AlgorithmUtils.mergeTwoLists(l1,l2));
+
     }
 
     @Test
@@ -125,22 +150,7 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void sqrt() {
-        assertEquals(2.0d,AlgorithmUtils.sqrt_2(45,0.00000000001),0.3);
-    }
-
-    @Test
-    public void strStr() {
-        assertEquals(3,AlgorithmUtils.strStr("abababc","ababc"));
-    }
-
-    @Test
-    public void divide() {
-        assertEquals(-2147483648, AlgorithmUtils.divide(-2147483648, 1));
-    }
-
-    @Test
-    public void longestValidParentheses() {
-        assertEquals(2, AlgorithmUtils.longestValidParentheses("(()())"));
+    public void threadTest_text() throws Exception {
+        assertTrue(AlgorithmUtils.threadTest());
     }
 }

@@ -1,6 +1,13 @@
 package com.good.diaodiaode.tebiediao;
 
 import android.app.Application;
+import android.content.Context;
+
+import com.good.diaodiaode.tebiediao.hook.HookUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by lizheng on 2018/2/9.

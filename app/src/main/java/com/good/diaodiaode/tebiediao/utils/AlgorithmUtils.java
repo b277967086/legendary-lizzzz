@@ -1,13 +1,20 @@
 package com.good.diaodiaode.tebiediao.utils;
 
-import android.os.SystemClock;
-import android.text.TextUtils;
 import android.util.Log;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Stack;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by ex-lizheng102 on 2017-03-01.
@@ -569,4 +576,259 @@ public class AlgorithmUtils {
 //            return res;
 //        }
 //    }
+    public static List<String> letterCombinations(String digits) {
+        List<String> res = new ArrayList();
+        if (digits.isEmpty()) {
+            return res;
+        }
+        Map<Character, List<String>> maps = new HashMap();
+        maps.put('2', Arrays.asList("a", "b", "c"));
+        maps.put('3', Arrays.asList("d", "e", "f"));
+        maps.put('4', Arrays.asList("g", "h", "i"));
+        maps.put('5', Arrays.asList("j", "k", "l"));
+        maps.put('6', Arrays.asList("m", "n", "o"));
+        maps.put('7', Arrays.asList("p", "q", "r", "s"));
+        maps.put('8', Arrays.asList("t", "u", "v"));
+        maps.put('9', Arrays.asList("w", "x", "y", "z"));
+
+        char[] chars = digits.toCharArray();
+
+        for (char ch : chars) {
+
+            List<String> strs = maps.get(ch);
+
+            List<String> temp = new ArrayList<>();
+            for (String end : strs) {
+                if (res.isEmpty()) {
+                    temp.add(end);
+                } else {
+                    for (String prefix : res) {
+                        temp.add(prefix + end);
+                    }
+                }
+            }
+
+            res = temp;
+        }
+
+        return res;
+    }
+
+    public static class ListNode {
+        int val;
+        public ListNode next;
+
+        public ListNode(int x) {
+            val = x;
+        }
+    }
+
+    public static ListNode removeNthFromEnd(ListNode head, int n) {
+
+        int length = 1;
+        List<ListNode> list = new ArrayList();
+        list.add(head);
+
+        ListNode pre = head;
+        ListNode next;
+        while ((next = pre.next) != null) {
+            list.add(next);
+            pre = next;
+            length++;
+        }
+
+        if (n >= length) {
+            head = head.next;
+        } else {
+            ListNode prel = list.get(length - n - 1);
+            prel.next = prel.next.next;
+        }
+
+
+        return head;
+    }
+
+    public boolean isValid(String s) {
+
+        if (s == null || s.isEmpty()) {
+            return false;
+        }
+        ArrayDeque<Character> records = new ArrayDeque();
+
+        char[] chars = s.toCharArray();
+
+
+        for (char c : chars) {
+            switch (c) {
+                case '(':
+                case '[':
+                case '{':
+                    records.push(c);
+                    break;
+                case ')':
+                    if (records.isEmpty() || '(' != records.pop()) {
+                        return false;
+                    }
+                    break;
+                case ']':
+                    if (records.isEmpty() || '[' != records.pop()) {
+                        return false;
+                    }
+                    break;
+                case '}':
+                    if (records.isEmpty() || '{' != records.pop()) {
+                        return false;
+                    }
+                    break;
+            }
+        }
+
+        return records.isEmpty();
+    }
+
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+
+        ListNode temp1 = new ListNode(0);
+        temp1.next = l1;
+
+        ListNode temp2 = new ListNode(0);
+        temp2.next = l2;
+
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        while (temp1.next != null || temp2.next != null) {
+
+            if (temp1.next == null) {
+                current.next = temp2.next;
+                break;
+            }
+
+            if (temp2.next == null) {
+                current.next = temp1.next;
+                break;
+            }
+
+            if (temp1.next.val < temp2.next.val) {
+                current.next = temp1.next;
+                current = temp1.next;
+                temp1 = temp1.next;
+            } else {
+                current.next = temp2.next;
+                current = temp2.next;
+                temp2 = temp2.next;
+            }
+        }
+
+        return dummy.next;
+    }
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     * int val;
+     * ListNode next;
+     * ListNode(int x) { val = x; }
+     * }
+     */
+
+    ListNode dump = new ListNode(0);
+    ListNode cur = dump;
+
+    public ListNode mergeKLists(ListNode[] lists) {
+
+        if (lists.length == 0) {
+            return null;
+        }
+        while (true) {
+            int changeIndex = 0;
+            int tempMax = Integer.MIN_VALUE;
+            for (int i = 0; i < lists.length; i++) {
+                //链表循环完成了
+                if (lists[i] == null) {
+                    continue;
+                }
+                if (lists[i].val > tempMax) {
+                    changeIndex = i;
+                    tempMax = lists[i].val;
+                }
+            }
+            if (tempMax == Integer.MIN_VALUE) {
+                return dump.next;
+            } else {
+                lists[changeIndex] = lists[changeIndex].next;
+                cur.next = lists[changeIndex].next;
+                cur = cur.next;
+            }
+        }
+    }
+
+
+    private volatile static int i = 0;
+    private volatile static int currenThread = 1;
+
+    public static boolean threadTest() {
+
+        final ReentrantLock lock = new ReentrantLock();
+        final Condition conditionA = lock.newCondition();
+        final Condition conditionB = lock.newCondition();
+        final Condition conditionC = lock.newCondition();
+
+
+        Thread t1 = new Thread("thread1") {
+            @Override
+            public void run() {
+                plusI(lock, conditionA, conditionB, 1, 2);
+            }
+        };
+
+        Thread t2 = new Thread("thread2") {
+            @Override
+            public void run() {
+                plusI(lock, conditionB, conditionC, 2, 3);
+            }
+        };
+
+        Thread t3 = new Thread("thread3") {
+            @Override
+            public void run() {
+                plusI(lock, conditionC, conditionA, 3, 1);
+            }
+        };
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        return true;
+    }
+
+    private static void plusI(ReentrantLock lock, Condition conditionC, Condition conditionA, int i, int i2) {
+        while (i < 1000) {
+            lock.lock();
+            try {
+                if (currenThread != i) {
+                    try {
+                        conditionC.await();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                if (i >= 1000) {
+                    break;
+                }
+
+                i++;
+                currenThread = i2;
+                Log.e("threadtest", Thread.currentThread().getName() + ";i:" + i);
+                conditionA.signal();
+            } catch (Exception e) {
+
+            } finally {
+                lock.unlock();
+            }
+
+        }
+    }
 }
+

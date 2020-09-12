@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="legendary-lizzzz/app" />
       <module fileurl="file://$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" filepath="$PROJECT_DIR$/javapotcompiler/javapotcompiler.iml" group="legendary-lizzzz/javapotcompiler" />
       <module fileurl="file://$PROJECT_DIR$/legendary-lizzzz.iml" filepath="$PROJECT_DIR$/legendary-lizzzz.iml" group="legendary-lizzzz" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/methedcomputerplugin/methedcomputerplugin.iml" filepath="$PROJECT_DIR$/.idea/modules/methedcomputerplugin/methedcomputerplugin.iml" group="legendary-lizzzz/methedcomputerplugin" />
+      <module fileurl="file://$PROJECT_DIR$/test23/legendary-lizzzz-test23.iml" filepath="$PROJECT_DIR$/test23/legendary-lizzzz-test23.iml" group="legendary-lizzzz/test23" />
       <module fileurl="file://$PROJECT_DIR$/plugin/plugin.iml" filepath="$PROJECT_DIR$/plugin/plugin.iml" group="legendary-lizzzz/plugin" />
       <module fileurl="file://$PROJECT_DIR$/test23/test23.iml" filepath="$PROJECT_DIR$/test23/test23.iml" group="legendary-lizzzz/test23" />
     </modules>

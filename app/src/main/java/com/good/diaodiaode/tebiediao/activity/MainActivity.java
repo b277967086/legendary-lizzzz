@@ -40,6 +40,7 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.good.diaodiaode.tebiediao.annotation.ContentView;
+import com.good.diaodiaode.tebiediao.utils.AlgorithmUtils;
 import com.good.diaodiaode.tebiediao.utils.ContentViewUtils;
 import com.good.diaodiaode.tebiediao.IFuckInterface;
 import com.good.diaodiaode.tebiediao.utils.JsonParser;
@@ -95,7 +96,7 @@ import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-@ContentView(id = R.layout.activity_main)
+//@ContentView(id = R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener {
 
     private File mPicFile;
@@ -182,522 +183,524 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        SDCardUtils.readSDCard();
-//        SDCardUtils.readSystem(this);
-//        SDCardUtils.readPathRoot();
-        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 444);
-        ContentViewUtils.init(this);
-//        setContentView(R.layout.activity_main);
-//        NumberUtils.getBAt(4);
-//        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
-//        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
-
-        bt = (Button) findViewById(R.id.bt_takepic);
-//        addSpringView(bt);
-        rl = (RelativeLayout) findViewById(R.id.rl);
-        btShowToast = (Button) findViewById(R.id.bt_showtoast);
-        btshowclose = (Button) findViewById(R.id.bt_showclose);
-        btThreadHelp = (Button) findViewById(R.id.thread_help);
-        btnotification = (Button) findViewById(R.id.notification);
-        sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
-        rxjava = (Button) findViewById(R.id.bt_rxjava);
-        linkage = (Button) findViewById(R.id.linkage);
-        uploadProgress = (Button) findViewById(R.id.uploadProgress);
-        kedaxunfei = (Button) findViewById(R.id.kedaxunfei);
-        mResultText = (EditText) findViewById(R.id.mResultText);
-        ormlite = (Button) findViewById(R.id.ormlite);
-        permisstion = (Button) findViewById(R.id.permisstion);
-        singleinstance = (Button) findViewById(R.id.singleinstance);
-        singleInstance = (Button) findViewById(R.id.singleInstance);
-        video = (Button) findViewById(R.id.video);
-        testmanifest = (Button) findViewById(R.id.testmanifest);
-        testcontract = (Button) findViewById(R.id.testcontract);
-        maptojson = (Button) findViewById(R.id.testmap2json);
-        iv = (ImageView) findViewById(R.id.iv_asdf);
-        startmain3 = (Button) findViewById(R.id.startmain3);
-        startsms = (Button) findViewById(R.id.startsms);
-        startpicpick = (Button) findViewById(R.id.startpicpick);
-        deeplink = (Button) findViewById(R.id.deeplink);
-//        addSpringView(rl);
-        addSpringView(btShowToast);
-        addSpringView(btshowclose);
-        addSpringView(btThreadHelp);
-        addSpringView(btnotification);
-        addSpringView(sendBroadcast);
-
-        mInstance = RotateCircleHelper.getInstance(getApplicationContext());
-
-//        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
-//        intentFilter.setPriority(10);
-//        registerReceiver(new MyBroadcastReceiver(), intentFilter);
+////        SDCardUtils.readSDCard();
+////        SDCardUtils.readSystem(this);
+////        SDCardUtils.readPathRoot();
+//        ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 444);
+//        ContentViewUtils.init(this);
+        setContentView(R.layout.activity_main);
+////        NumberUtils.getBAt(4);
+////        NumberUtils.quickSort(new int[]{8,4,9,7,6,5},0,5);
+////        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=58a2bcff");
 //
-//        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
-//        intentFilter.setPriority(10);
-//        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
+//        bt = (Button) findViewById(R.id.bt_takepic);
+////        addSpringView(bt);
+//        rl = (RelativeLayout) findViewById(R.id.rl);
+//        btShowToast = (Button) findViewById(R.id.bt_showtoast);
+//        btshowclose = (Button) findViewById(R.id.bt_showclose);
+//        btThreadHelp = (Button) findViewById(R.id.thread_help);
+//        btnotification = (Button) findViewById(R.id.notification);
+//        sendBroadcast = (Button) findViewById(R.id.sendbroadcast);
+//        rxjava = (Button) findViewById(R.id.bt_rxjava);
+//        linkage = (Button) findViewById(R.id.linkage);
+//        uploadProgress = (Button) findViewById(R.id.uploadProgress);
+//        kedaxunfei = (Button) findViewById(R.id.kedaxunfei);
+//        mResultText = (EditText) findViewById(R.id.mResultText);
+//        ormlite = (Button) findViewById(R.id.ormlite);
+//        permisstion = (Button) findViewById(R.id.permisstion);
+//        singleinstance = (Button) findViewById(R.id.singleinstance);
+//        singleInstance = (Button) findViewById(R.id.singleInstance);
+//        video = (Button) findViewById(R.id.video);
+//        testmanifest = (Button) findViewById(R.id.testmanifest);
+//        testcontract = (Button) findViewById(R.id.testcontract);
+//        maptojson = (Button) findViewById(R.id.testmap2json);
+//        iv = (ImageView) findViewById(R.id.iv_asdf);
+//        startmain3 = (Button) findViewById(R.id.startmain3);
+//        startsms = (Button) findViewById(R.id.startsms);
+//        startpicpick = (Button) findViewById(R.id.startpicpick);
+//        deeplink = (Button) findViewById(R.id.deeplink);
+////        addSpringView(rl);
+//        addSpringView(btShowToast);
+//        addSpringView(btshowclose);
+//        addSpringView(btThreadHelp);
+//        addSpringView(btnotification);
+//        addSpringView(sendBroadcast);
 //
-//        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
-//        intentFilter.setPriority(10);
-//        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
-
-
-        btShowToast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.cn.liz");
-                sendOrderedBroadcast(intent, null);
-//                startActivity(new Intent(MainActivity.this, SecActivity.class));
-            }
-        });
-
-        btshowclose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //  先创建一个toast对象
-                Toast toast = Toast.makeText(MainActivity.this, "永不消失的toast", Toast.LENGTH_SHORT);
-
-                //  设置toast信息提示框显示的位置（在屏幕顶部水平居中显示）
-                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
-                try {
-                    //  从toast对象中获得mtn变量
-                    Field field = toast.getClass().getDeclaredField("mTN");
-                    field.setAccessible(true);
-                    Object obj = field.get(toast);
-                    //  tn对象中获得了show方法
-                    Method method = obj.getClass().getDeclaredMethod("show");
-                    //  调用show方法来显示toast信息提示框
-                    method.invoke(obj);
-                } catch (Exception e) {
-                    Log.e("eeeee", e.getMessage());
-                }
-
-            }
-        });
-
-
-        btThreadHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Lock lock = new ReentrantLock();
-                Condition Condition456 = lock.newCondition();
-                Condition Condition789 = lock.newCondition();
-
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        lock.lock();
-//                        while (value<=3){
+//        mInstance = RotateCircleHelper.getInstance(getApplicationContext());
 //
-//                        }
+////        IntentFilter intentFilter = new IntentFilter("com.cn.liz");
+////        intentFilter.setPriority(10);
+////        registerReceiver(new MyBroadcastReceiver(), intentFilter);
+////
+////        IntentFilter intentFilter2 = new IntentFilter("com.cn.liz");
+////        intentFilter.setPriority(10);
+////        registerReceiver(new MyBroadcastReceiver(), intentFilter2);
+////
+////        IntentFilter intentFilter3 = new IntentFilter("com.cn.liz");
+////        intentFilter.setPriority(10);
+////        registerReceiver(new MyBroadcastReceiver(), intentFilter3);
 //
-//                    }
-//                }).start();
-
-                Thread threadA = new Thread(new ThreadA());
-                Thread threadB = new Thread(new ThreadB());
-                threadA.start();
-                threadB.start();
-
-
-            }
-        });
-
-        btnotification.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                PendingIntent pendingIntent3 = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), MainActivity.class), 0);
-                // 通过Notification.Builder来创建通知，注意API Level
-                // API16之后才支持
-                Notification notify3 = new Notification.Builder(getApplicationContext())
-                        .setSmallIcon(R.drawable.background_alertdialog)
-                        .setTicker("TickerText:" + "您有新短消息，请注意查收！")
-                        .setContentTitle("Notification Title")
-                        .setContentText("This is the notification message")
-                        .setContentIntent(pendingIntent3).setNumber(1).setAutoCancel(true).getNotification(); // 需要注意build()是在API
-                // level16及之后增加的，API11可以使用getNotificatin()来替代
-                manager.notify(NOTIFICATION_FLAG, notify3);// 步骤4：通过通知管理器来发起通知。如果id不同，则每click，在status哪里增加一个提示
-            }
-        });
-
-        sendBroadcast.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.baidu.android.pushservice.action.RECEIVE");
-                sendBroadcast(intent);
-            }
-        });
-
-        mScaleSpring = mSpringSystem.createSpring();
-        mScaleSpring.addListener(mSpringListener);
-
-        final Observer<String> observer = new Observer<String>() {
-            @Override
-            public void onCompleted() {
-                Log.e("rxjava", "onCompleted");
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                Log.e("rxjava", "onError");
-            }
-
-            @Override
-            public void onNext(String s) {
-                Log.e("rxjava", s);
-            }
-        };
-
-        final Observer<Student> observer2 = new Observer<Student>() {
-
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(Student student) {
-
-            }
-        };
-
-        final Person per1 = new Person(123, "王二");
-        Person per2 = new Person(234, "李三");
-        final Person[] persons = {per1, per2};
-
-        rxjava.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Observable.from(persons).map(new Func1<Person, Student>() {
-                    @Override
-                    public Student call(Person person) {
-                        return getStudent(person.getId());
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                        .flatMap(new Func1<Student, Observable<String>>() {
-                            @Override
-                            public Observable<String> call(Student student) {
-                                return Observable.from(student.getFriendnames());
-                            }
-                        }).subscribeOn(Schedulers.io())
-                        .doOnSubscribe(new Action0() {
-                            @Override
-                            public void call() {
-                            }
-                        }).observeOn(AndroidSchedulers.mainThread())
-
-                        .subscribe(observer);
-
-//                observable.subscribe(observer2);
-            }
-        });
-
-
-        datas = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            LinkageDataBean bean1 = new LinkageDataBean();
-            bean1.setName("张" + i);
-            ArrayList<LinkageDataBean> list2 = new ArrayList<>();
-            bean1.setLinkageDataBeans(list2);
-            for (int i2 = 0; i2 < 10; i2++) {
-                LinkageDataBean bean2 = new LinkageDataBean();
-                bean2.setName("李" + i + i2);
-                ArrayList<LinkageDataBean> list3 = new ArrayList<>();
-                bean2.setLinkageDataBeans(list3);
-                for (int i3 = 0; i3 < 10; i3++) {
-                    LinkageDataBean bean3 = new LinkageDataBean();
-                    bean3.setName("赵" + i + i2 + i3);
-                    list3.add(bean3);
-                }
-                list2.add(bean2);
-            }
-            datas.add(bean1);
-        }
-
-
-//        ArrayList<LinkageDataBean> list1 = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            LinkageDataBean bean1 = new LinkageDataBean();
-//            bean1.setName("张" + i);
-//            list1.add(bean1);
-//        }
 //
-//        ArrayList<LinkageDataBean> list2 = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            LinkageDataBean bean1 = new LinkageDataBean();
-//            bean1.setName("李" + i);
-//            list2.add(bean1);
-//        }
-//
-//        ArrayList<LinkageDataBean> list3 = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            LinkageDataBean bean1 = new LinkageDataBean();
-//            bean1.setName("王" + i);
-//            list3.add(bean1);
-//        }
-
-        mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
-//                .setCyclic(false)
-//                .setCancelStringId("关闭")
-//                .setTitleStringId("取消当前预约")
-//                .setTitleIsShow(true)
-//                .setSureStringId("确定")
-//                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
-//                .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
-//                .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
-//                .setWheelItemTextSelectorSize(14)
-                .setCallBack(new OnSelectChangedListener() {
-                    @Override
-                    public void onSelectChanged(int... selectItems) {
-
-                    }
-                })
-                .setCanLinkaged(true)
-                .setLinkedData(datas)
-//                .addNoLinkedData(list1)
-//                .addNoLinkedData(list2)
-//                .addNoLinkedData(list3)
-                .setCurrentItems(3, 2)
-                .build();
-
-        linkage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mLinkageWheelPickerDialog.show(getSupportFragmentManager(), "mLinkageWheelPickerDialog");
-            }
-        });
-
-        uploadProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final UploadProgressBarDialog uploadProgressBarHelper = UploadProgressBarDialog.create(getApplicationContext());
-                uploadProgressBarHelper.show();
-
-                Timer timer = new Timer();
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        uploadProgressBarHelper.setUploadComplete();
-                    }
-                }, 5000L);
-            }
-        });
-
-
-//        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
-//        SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(getApplicationContext(), mInitListener);
-//        //2.设置听写参数，详见《科大讯飞MSC API手册(Android)》SpeechConstant类
-//        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
-//        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
-//        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
-//
-//        //听写监听器
-//        RecognizerListener mRecoListener = new RecognizerListener() {
-//            //听写结果回调接口(返回Json格式结果，用户可参见附录12.1)；
-//            //一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
-//            // 关于解析Json的代码可参见MscDemo中JsonParser类；
-//            //isLast等于true时会话结束。
-//            public void onResult(RecognizerResult results, boolean isLast) {
-//                Log.d("Result:", results.getResultString());
-//            }
-//
-//            //会话发生错误回调接口
-//            public void onError(SpeechError error) {
-//                error.getPlainDescription(true); //获取错误码描述}
-//                //开始录音
-//            }
-//
-//            //音量值0~30
+//        btShowToast.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void onVolumeChanged(int i, byte[] bytes) {
+//            public void onClick(View v) {
+//                Intent intent = new Intent("com.cn.liz");
+//                sendOrderedBroadcast(intent, null);
+////                startActivity(new Intent(MainActivity.this, SecActivity.class));
+//            }
+//        });
+//
+//        btshowclose.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                //  先创建一个toast对象
+//                Toast toast = Toast.makeText(MainActivity.this, "永不消失的toast", Toast.LENGTH_SHORT);
+//
+//                //  设置toast信息提示框显示的位置（在屏幕顶部水平居中显示）
+//                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
+//                try {
+//                    //  从toast对象中获得mtn变量
+//                    Field field = toast.getClass().getDeclaredField("mTN");
+//                    field.setAccessible(true);
+//                    Object obj = field.get(toast);
+//                    //  tn对象中获得了show方法
+//                    Method method = obj.getClass().getDeclaredMethod("show");
+//                    //  调用show方法来显示toast信息提示框
+//                    method.invoke(obj);
+//                } catch (Exception e) {
+//                    Log.e("eeeee", e.getMessage());
+//                }
 //
 //            }
+//        });
 //
-//            public void onBeginOfSpeech() {
+//
+//        btThreadHelp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final Lock lock = new ReentrantLock();
+//                Condition Condition456 = lock.newCondition();
+//                Condition Condition789 = lock.newCondition();
+//
+////                new Thread(new Runnable() {
+////                    @Override
+////                    public void run() {
+////                        lock.lock();
+////                        while (value<=3){
+////
+////                        }
+////
+////                    }
+////                }).start();
+//
+//                Thread threadA = new Thread(new ThreadA());
+//                Thread threadB = new Thread(new ThreadB());
+//                threadA.start();
+//                threadB.start();
+//
+//
+//            }
+//        });
+//
+//        btnotification.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//                PendingIntent pendingIntent3 = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), MainActivity.class), 0);
+//                // 通过Notification.Builder来创建通知，注意API Level
+//                // API16之后才支持
+//                Notification notify3 = new Notification.Builder(getApplicationContext())
+//                        .setSmallIcon(R.drawable.background_alertdialog)
+//                        .setTicker("TickerText:" + "您有新短消息，请注意查收！")
+//                        .setContentTitle("Notification Title")
+//                        .setContentText("This is the notification message")
+//                        .setContentIntent(pendingIntent3).setNumber(1).setAutoCancel(true).getNotification(); // 需要注意build()是在API
+//                // level16及之后增加的，API11可以使用getNotificatin()来替代
+//                manager.notify(NOTIFICATION_FLAG, notify3);// 步骤4：通过通知管理器来发起通知。如果id不同，则每click，在status哪里增加一个提示
+//            }
+//        });
+//
+//        sendBroadcast.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent("com.baidu.android.pushservice.action.RECEIVE");
+//                sendBroadcast(intent);
+//            }
+//        });
+//
+//        mScaleSpring = mSpringSystem.createSpring();
+//        mScaleSpring.addListener(mSpringListener);
+//
+//        final Observer<String> observer = new Observer<String>() {
+//            @Override
+//            public void onCompleted() {
+//                Log.e("rxjava", "onCompleted");
 //            }
 //
-//            //结束录音
-//            public void onEndOfSpeech() {
+//            @Override
+//            public void onError(Throwable e) {
+//                Log.e("rxjava", "onError");
 //            }
 //
-//            //扩展用接口
-//            public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+//            @Override
+//            public void onNext(String s) {
+//                Log.e("rxjava", s);
 //            }
 //        };
 //
-//        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
-//        final RecognizerDialog iatDialog = new RecognizerDialog(this, mInitListener);
-////2.设置听写参数，同上节
-////3.设置回调接口
-//        iatDialog.setListener(new RecognizerDialogListener() {
-//            @Override
-//            public void onResult(RecognizerResult recognizerResult, boolean b) {
-//                printResult(recognizerResult);
-//                if (b) {
-//                } else {
+//        final Observer<Student> observer2 = new Observer<Student>() {
 //
-//                }
+//            @Override
+//            public void onCompleted() {
+//
 //            }
 //
 //            @Override
-//            public void onError(SpeechError speechError) {
+//            public void onError(Throwable e) {
 //
 //            }
-//        });
 //
-//        //4.开始听写
-//        mIat.startListening(mRecoListener);
+//            @Override
+//            public void onNext(Student student) {
 //
-//        kedaxunfei.setOnClickListener(new View.OnClickListener() {
+//            }
+//        };
+//
+//        final Person per1 = new Person(123, "王二");
+//        Person per2 = new Person(234, "李三");
+//        final Person[] persons = {per1, per2};
+//
+//        rxjava.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                //3.开始听写
-////                mIat.startListening(mRecoListener);
-//                iatDialog.show();
+//
+//                Observable.from(persons).map(new Func1<Person, Student>() {
+//                    @Override
+//                    public Student call(Person person) {
+//                        return getStudent(person.getId());
+//                    }
+//                }).observeOn(AndroidSchedulers.mainThread())
+//                        .flatMap(new Func1<Student, Observable<String>>() {
+//                            @Override
+//                            public Observable<String> call(Student student) {
+//                                return Observable.from(student.getFriendnames());
+//                            }
+//                        }).subscribeOn(Schedulers.io())
+//                        .doOnSubscribe(new Action0() {
+//                            @Override
+//                            public void call() {
+//                            }
+//                        }).observeOn(AndroidSchedulers.mainThread())
+//
+//                        .subscribe(observer);
+//
+////                observable.subscribe(observer2);
 //            }
 //        });
 //
-//        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
-//        Dao<User, Integer> userDao;
-//        try {
-//            userDao = databaseHelper.getUserDao();
-//            userDao.createOrUpdate(new User("xiao1", "asdasdas"));
-//            userDao.createIfNotExists(new User("xiao2", "asdasdas"));
-//            userDao.createIfNotExists(new User("xiao3", "asdasdas"));
-////            User user = userDao.queryForId(3);
-//            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
-//            Log.v("ormlite", users.toString());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-
-
-        ormlite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        permisstion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int flag = getPackageManager().checkPermission(Manifest.permission.RECORD_AUDIO, getPackageName());
-                if (flag == PackageManager.PERMISSION_DENIED) {
-                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
-                } else if (flag == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(MainActivity.this, "直接开工", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        singleinstance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                int i = 0;
-//                while (i < 10) {
-//                    SingleUtils.getInstance();
-//                    i++;
+//
+//        datas = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            LinkageDataBean bean1 = new LinkageDataBean();
+//            bean1.setName("张" + i);
+//            ArrayList<LinkageDataBean> list2 = new ArrayList<>();
+//            bean1.setLinkageDataBeans(list2);
+//            for (int i2 = 0; i2 < 10; i2++) {
+//                LinkageDataBean bean2 = new LinkageDataBean();
+//                bean2.setName("李" + i + i2);
+//                ArrayList<LinkageDataBean> list3 = new ArrayList<>();
+//                bean2.setLinkageDataBeans(list3);
+//                for (int i3 = 0; i3 < 10; i3++) {
+//                    LinkageDataBean bean3 = new LinkageDataBean();
+//                    bean3.setName("赵" + i + i2 + i3);
+//                    list3.add(bean3);
 //                }
-                SingleUtils.test();
-            }
-        });
-
-        singleInstance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SecActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        video.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        testmanifest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent("com.good.diaodiaode.tebiediao.TestManifestActivity");
-                startActivity(intent);
-            }
-        });
-
-        testcontract.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setAction(Intent.ACTION_PICK);
-                i.setData(ContactsContract.Contacts.CONTENT_URI);
-                startActivityForResult(i, 1);
-            }
-        });
-        maptojson.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HashMap<String, String> map1 = new HashMap();
-                map1.put("asdasd", "sdfsd电饭锅");
-                map1.put("asdasdasd", "sdfasdsd电饭sdogjf锅");
-                map1.put("asdaetposd", "sdfsd电sdfg饭锅");
-                map1.put("assfdgdasd", "sdfsd电饭锅");
-                map1.put("asdfghasd", "sdfsd电fghjf饭锅");
-
-
-                JSONObject jsonObject = new JSONObject(map1);
-                Log.e("textMap2Json", jsonObject.toString());
-
-
-            }
-        });
-
-        startmain3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, OverFloatActivity.class));
-            }
-        });
-
-        startsms.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SMSActivity.class));
-            }
-        });
-
-        startpicpick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!checkPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, PERMISSION_WRITE_SDCARD);
-                    return;
-                }
-                Album.startAlbum(MainActivity.this, ACTIVITY_REQUEST_SELECT_PHOTO
-                        , 9
-                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)
-                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
-            }
-        });
-
-        deeplink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        Log.d("test_isSameDay",""+ SystemClock.elapsedRealtime());
-        Log.d("test_isSameDay",""+System.currentTimeMillis());
-        Log.d("test_isSameDay",""+isSameDay(1554998399,System.currentTimeMillis()));
+//                list2.add(bean2);
+//            }
+//            datas.add(bean1);
+//        }
+//
+//
+////        ArrayList<LinkageDataBean> list1 = new ArrayList<>();
+////        for (int i = 0; i < 10; i++) {
+////            LinkageDataBean bean1 = new LinkageDataBean();
+////            bean1.setName("张" + i);
+////            list1.add(bean1);
+////        }
+////
+////        ArrayList<LinkageDataBean> list2 = new ArrayList<>();
+////        for (int i = 0; i < 10; i++) {
+////            LinkageDataBean bean1 = new LinkageDataBean();
+////            bean1.setName("李" + i);
+////            list2.add(bean1);
+////        }
+////
+////        ArrayList<LinkageDataBean> list3 = new ArrayList<>();
+////        for (int i = 0; i < 10; i++) {
+////            LinkageDataBean bean1 = new LinkageDataBean();
+////            bean1.setName("王" + i);
+////            list3.add(bean1);
+////        }
+//
+//        mLinkageWheelPickerDialog = new LinkageWheelPickerDialog.Builder()
+////                .setCyclic(false)
+////                .setCancelStringId("关闭")
+////                .setTitleStringId("取消当前预约")
+////                .setTitleIsShow(true)
+////                .setSureStringId("确定")
+////                .setThemeColor(getResources().getColor(R.color.colorPrimaryDark))
+////                .setWheelItemTextNormalColor(getResources().getColor(R.color.colorAccent))
+////                .setWheelItemTextSelectorColor(getResources().getColor(R.color.colorPrimary))
+////                .setWheelItemTextSelectorSize(14)
+//                .setCallBack(new OnSelectChangedListener() {
+//                    @Override
+//                    public void onSelectChanged(int... selectItems) {
+//
+//                    }
+//                })
+//                .setCanLinkaged(true)
+//                .setLinkedData(datas)
+////                .addNoLinkedData(list1)
+////                .addNoLinkedData(list2)
+////                .addNoLinkedData(list3)
+//                .setCurrentItems(3, 2)
+//                .build();
+//
+//        linkage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mLinkageWheelPickerDialog.show(getSupportFragmentManager(), "mLinkageWheelPickerDialog");
+//            }
+//        });
+//
+//        uploadProgress.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                final UploadProgressBarDialog uploadProgressBarHelper = UploadProgressBarDialog.create(getApplicationContext());
+//                uploadProgressBarHelper.show();
+//
+//                Timer timer = new Timer();
+//                timer.schedule(new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        uploadProgressBarHelper.setUploadComplete();
+//                    }
+//                }, 5000L);
+//            }
+//        });
+//
+//
+////        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+////        SpeechRecognizer mIat = SpeechRecognizer.createRecognizer(getApplicationContext(), mInitListener);
+////        //2.设置听写参数，详见《科大讯飞MSC API手册(Android)》SpeechConstant类
+////        mIat.setParameter(SpeechConstant.DOMAIN, "iat");
+////        mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+////        mIat.setParameter(SpeechConstant.ACCENT, "mandarin ");
+////
+////        //听写监听器
+////        RecognizerListener mRecoListener = new RecognizerListener() {
+////            //听写结果回调接口(返回Json格式结果，用户可参见附录12.1)；
+////            //一般情况下会通过onResults接口多次返回结果，完整的识别内容是多次结果的累加；
+////            // 关于解析Json的代码可参见MscDemo中JsonParser类；
+////            //isLast等于true时会话结束。
+////            public void onResult(RecognizerResult results, boolean isLast) {
+////                Log.d("Result:", results.getResultString());
+////            }
+////
+////            //会话发生错误回调接口
+////            public void onError(SpeechError error) {
+////                error.getPlainDescription(true); //获取错误码描述}
+////                //开始录音
+////            }
+////
+////            //音量值0~30
+////            @Override
+////            public void onVolumeChanged(int i, byte[] bytes) {
+////
+////            }
+////
+////            public void onBeginOfSpeech() {
+////            }
+////
+////            //结束录音
+////            public void onEndOfSpeech() {
+////            }
+////
+////            //扩展用接口
+////            public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+////            }
+////        };
+////
+////        //1.创建SpeechRecognizer对象，第二个参数：本地听写时传InitListener
+////        final RecognizerDialog iatDialog = new RecognizerDialog(this, mInitListener);
+//////2.设置听写参数，同上节
+//////3.设置回调接口
+////        iatDialog.setListener(new RecognizerDialogListener() {
+////            @Override
+////            public void onResult(RecognizerResult recognizerResult, boolean b) {
+////                printResult(recognizerResult);
+////                if (b) {
+////                } else {
+////
+////                }
+////            }
+////
+////            @Override
+////            public void onError(SpeechError speechError) {
+////
+////            }
+////        });
+////
+////        //4.开始听写
+////        mIat.startListening(mRecoListener);
+////
+////        kedaxunfei.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                //3.开始听写
+//////                mIat.startListening(mRecoListener);
+////                iatDialog.show();
+////            }
+////        });
+////
+////        DatabaseHelper databaseHelper = DatabaseHelper.getInstance(getApplicationContext());
+////        Dao<User, Integer> userDao;
+////        try {
+////            userDao = databaseHelper.getUserDao();
+////            userDao.createOrUpdate(new User("xiao1", "asdasdas"));
+////            userDao.createIfNotExists(new User("xiao2", "asdasdas"));
+////            userDao.createIfNotExists(new User("xiao3", "asdasdas"));
+//////            User user = userDao.queryForId(3);
+////            List<User> users = userDao.queryBuilder().where().eq("user_desc", "asdasdas").query();
+////            Log.v("ormlite", users.toString());
+////        } catch (SQLException e) {
+////            e.printStackTrace();
+////        }
+//
+//
+//        ormlite.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//
+//        permisstion.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int flag = getPackageManager().checkPermission(Manifest.permission.RECORD_AUDIO, getPackageName());
+//                if (flag == PackageManager.PERMISSION_DENIED) {
+//                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECORD_AUDIO}, 123);
+//                } else if (flag == PackageManager.PERMISSION_GRANTED) {
+//                    Toast.makeText(MainActivity.this, "直接开工", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+//
+//        singleinstance.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                int i = 0;
+////                while (i < 10) {
+////                    SingleUtils.getInstance();
+////                    i++;
+////                }
+//                SingleUtils.test();
+//            }
+//        });
+//
+//        singleInstance.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), SecActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        video.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), VideoActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        testmanifest.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent("com.good.diaodiaode.tebiediao.TestManifestActivity");
+//                startActivity(intent);
+//            }
+//        });
+//
+//        testcontract.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent();
+//                i.setAction(Intent.ACTION_PICK);
+//                i.setData(ContactsContract.Contacts.CONTENT_URI);
+//                startActivityForResult(i, 1);
+//            }
+//        });
+//        maptojson.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                HashMap<String, String> map1 = new HashMap();
+//                map1.put("asdasd", "sdfsd电饭锅");
+//                map1.put("asdasdasd", "sdfasdsd电饭sdogjf锅");
+//                map1.put("asdaetposd", "sdfsd电sdfg饭锅");
+//                map1.put("assfdgdasd", "sdfsd电饭锅");
+//                map1.put("asdfghasd", "sdfsd电fghjf饭锅");
+//
+//
+//                JSONObject jsonObject = new JSONObject(map1);
+//                Log.e("textMap2Json", jsonObject.toString());
+//
+//
+//            }
+//        });
+//
+//        startmain3.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MainActivity.this, OverFloatActivity.class));
+//            }
+//        });
+//
+//        startsms.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(MainActivity.this, SMSActivity.class));
+//            }
+//        });
+//
+//        startpicpick.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!checkPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                    requestPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE, PERMISSION_WRITE_SDCARD);
+//                    return;
+//                }
+//                Album.startAlbum(MainActivity.this, ACTIVITY_REQUEST_SELECT_PHOTO
+//                        , 9
+//                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)
+//                        , ContextCompat.getColor(MainActivity.this, R.color.colorPrimaryDark));
+//            }
+//        });
+//
+//        deeplink.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
+//
+//        Log.d("test_isSameDay",""+ SystemClock.elapsedRealtime());
+//        Log.d("test_isSameDay",""+System.currentTimeMillis());
+//        Log.d("test_isSameDay",""+isSameDay(1554998399,System.currentTimeMillis()));
+//
+        AlgorithmUtils.threadTest();
     }
     public static boolean checkPermission(Context context, String permission) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
