@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.didi.virtualapk.host'
-apply plugin: 'plugintimetracer'
 //apply from:"../andResGuard.gradle"
 android {
     compileSdkVersion 29

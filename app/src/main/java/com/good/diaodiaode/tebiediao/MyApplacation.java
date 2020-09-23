@@ -27,9 +27,9 @@ public class MyApplacation extends Application {
 //        HookUtils.hookBack();
 
         // 初始化
-        com.paincker.timetracer.tracer.MainThreadTracer tracer = com.paincker.timetracer.tracer.MainThreadTracer.INSTANCE;
-        tracer.setThreshold(1);
-        com.paincker.timetracer.tracer.TimeTracer.setTracer(tracer);
-        com.paincker.timetracer.tracer.TimeTracer.e("setTracer", "attachBaseContext");
+//        com.paincker.timetracer.tracer.MainThreadTracer tracer = com.paincker.timetracer.tracer.MainThreadTracer.INSTANCE;
+//        tracer.setThreshold(1);
+//        com.paincker.timetracer.tracer.TimeTracer.setTracer(tracer);
+//        com.paincker.timetracer.tracer.TimeTracer.e("setTracer", "attachBaseContext");
     }
 }

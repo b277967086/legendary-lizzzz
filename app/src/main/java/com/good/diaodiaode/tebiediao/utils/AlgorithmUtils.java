@@ -1,10 +1,13 @@
 package com.good.diaodiaode.tebiediao.utils;
 
 import android.util.Log;
+import android.util.SparseArray;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,9 +27,10 @@ public class AlgorithmUtils {
 
     public AlgorithmUtils() {
     }
-
     public static float getNumber(float health, float atk, float armor) {
 
+        ArrayList al = new ArrayList(16);
+        al.add(12,"asdasd");
         float damageReduction = (float) (0.06 * armor / (1 + 0.06 * armor));
 
         return health / ((1 - damageReduction) * atk);
@@ -339,16 +343,75 @@ public class AlgorithmUtils {
         return revert == origin;
     }
 
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next;
-
         ListNode(int x) {
             val = x;
         }
     }
 
-    public ListNode mergeKLists(ListNode[] lists) {
+    public boolean isValidSudoku(char[][] board) {
+        HashMap<Character,HashMap<Integer,Boolean>> h = new HashMap();
+        HashMap<Character,HashMap<Integer,Boolean>> l = new HashMap();
+        HashMap<Character,HashMap<Integer,Boolean>> f = new HashMap();
+        for(int j=0;j<9;j++){
+            for(int i=0;i<9;i++){
+                char key = board[i][j];
+
+                if(key  == '.'){
+                    continue;
+                }
+                //先查同一行
+                if(h.get(key)!=null){
+                    if(h.get(key).get(j)){
+                        return false;
+                    }else{
+                        h.get(key).put(j,true);
+                    }
+
+                }else{
+                    HashMap<Integer,Boolean> sp = new HashMap();
+                    sp.put(j,true);
+                    h.put(key,sp);
+                }
+
+                //查同一列
+                if(l.get(key)!=null){
+                    if(l.get(key).get(i)){
+                        return false;
+                    }else{
+                        l.get(key).put(i,true);
+                    }
+
+                }else{
+                    HashMap<Integer,Boolean> sp = new HashMap();
+                    sp.put(i,true);
+                    l.put(key,sp);
+                }
+
+                //查同3*3单元
+                if(f.get(key)!=null){
+                    if(f.get(key).get(j*3+i/3)){
+                        return false;
+                    }else{
+                        f.get(key).put(j*3+i/3,true);
+                    }
+
+                }else{
+                    HashMap<Integer,Boolean> sp = new HashMap();
+                    sp.put(j*3+i/3,true);
+                    f.put(key,sp);
+                }
+
+
+            }
+        }
+
+        return true;
+    }
+
+    public ListNode mergeKLists1(ListNode[] lists) {
 
         if (lists.length == 0) {
             return null;
@@ -576,6 +639,45 @@ public class AlgorithmUtils {
 //            return res;
 //        }
 //    }
+
+    public int minDistance(String word1, String word2) {
+
+        char[] words1 = word1.toCharArray();
+        char[] words2 = word2.toCharArray();
+
+        int len1 = words1.length;
+        int len2 = words2.length;
+        int[][] dp = new int[len1][len2];
+
+        dp[0][0] = words1[0] == words2[0]?0:1;
+
+        for(int i=1;i<len1;i++){
+            if(words2[0] == words1[i]){
+                dp[i][0] = i;
+            }else{
+                dp[i][0] = dp[i-1][0] +1;
+            }
+        }
+
+        for(int j=1;j<len1;j++){
+            if(words1[0] == words2[j]){
+                dp[0][j] = j;
+            }else{
+                dp[0][j] = dp[0][j-1] +1;
+            }
+        }
+
+        for(int i=1;i<len1;i++){
+            for(int j=1;i<len2;j++){
+                if(words1[i] == words2[j]){
+                    dp[i][j] = dp[i-1][j-1];
+                }else{
+                    dp[i][j] = dp[i-1][j-1] + 1;
+                }
+            }
+        }
+        return dp[len1-1][len2-1];
+    }
     public static List<String> letterCombinations(String digits) {
         List<String> res = new ArrayList();
         if (digits.isEmpty()) {
@@ -614,14 +716,6 @@ public class AlgorithmUtils {
         return res;
     }
 
-    public static class ListNode {
-        int val;
-        public ListNode next;
-
-        public ListNode(int x) {
-            val = x;
-        }
-    }
 
     public static ListNode removeNthFromEnd(ListNode head, int n) {
 
@@ -687,7 +781,6 @@ public class AlgorithmUtils {
     }
 
     public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-
         ListNode temp1 = new ListNode(0);
         temp1.next = l1;
 
@@ -829,6 +922,34 @@ public class AlgorithmUtils {
             }
 
         }
+    }
+
+    public static String countAndSay(int n) {
+
+        if(n==1){
+            return "1";
+        }
+
+        String s = countAndSay(n-1);
+
+        StringBuilder res =new StringBuilder();
+        int start = 0;
+        for(int i=0;i<s.length();i++){
+            int current = s.charAt(i) -'0';
+
+            if(i==(s.length()-1)){
+                res.append(i-start+1).append(s.charAt(i));
+            }else{
+                int next = s.charAt(i+1)-'0';
+                //当前已经是该char的结束位置
+                if(current!=next){
+                    res.append(String.valueOf(i-start+1)).append(String.valueOf(current));
+                    start = next;
+                }
+            }
+        }
+
+        return res.toString();
     }
 }
 

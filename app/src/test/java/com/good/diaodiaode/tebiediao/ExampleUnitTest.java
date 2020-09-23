@@ -74,6 +74,12 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void isas_text() throws Exception {
+        assertEquals(new String[]{"ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"}, AlgorithmUtils.letterCombinations("23"));
+
+    }
+
+    @Test
     public void removeNthFromEnd_text() throws Exception {
         AlgorithmUtils.ListNode head = new AlgorithmUtils.ListNode(1);
         AlgorithmUtils.ListNode pre = head;
@@ -152,5 +158,10 @@ public class ExampleUnitTest {
     @Test
     public void threadTest_text() throws Exception {
         assertTrue(AlgorithmUtils.threadTest());
+    }
+
+    @Test
+    public void asdas_text() throws Exception {
+        assertEquals("1231",AlgorithmUtils.countAndSay(5));
     }
 }
